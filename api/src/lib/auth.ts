@@ -29,6 +29,8 @@ export const getCurrentUser = async (session: Decoded) => {
     where: { id: session.id },
     select: {
       id: true,
+      name: true,
+      email: true,
       RestaurantUser: {
         select: {
           id: true,
