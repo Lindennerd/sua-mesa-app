@@ -1,25 +1,30 @@
-import { useRef } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useAuth } from '@redwoodjs/auth'
 import {
+  EmailField,
+  FieldError,
   Form,
   Label,
-  TextField,
   PasswordField,
-  FieldError,
   Submit,
+  TextField
 } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 const SignupPage = () => {
-  const { isAuthenticated, signUp } = useAuth()
+  const { isAuthenticated, currentUser,  signUp } = useAuth()
 
   useEffect(() => {
+
     if (isAuthenticated) {
-      navigate(routes.home())
+      if (!currentUser.RestaurantUser.length) {
+        navigate(routes.setup())
+      } else {
+        navigate(routes.home())
+      }
     }
   }, [isAuthenticated])
 
@@ -58,13 +63,26 @@ const SignupPage = () => {
               <div className="rw-form-wrapper">
                 <Form onSubmit={onSubmit} className="rw-form-wrapper">
                   <Label
+                    name="name"
+                    className="rw-label"
+                    errorClassName="rw-label rw-label-error"
+                  >
+                    Nome
+                  </Label>
+                  <TextField
+                    name="name"
+                    className="rw-input"
+                    errorClassName="rw-input rw-input-error"
+                  ></TextField>
+
+                  <Label
                     name="username"
                     className="rw-label"
                     errorClassName="rw-label rw-label-error"
                   >
-                    Username
+                    Email
                   </Label>
-                  <TextField
+                  <EmailField
                     name="username"
                     className="rw-input"
                     errorClassName="rw-input rw-input-error"
