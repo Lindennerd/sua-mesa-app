@@ -52,9 +52,6 @@ export const schema = gql`
     "Description for name."
     name: String!
 
-    "Description for slug."
-    slug: String!
-
     "Description for address."
     address: String!
 

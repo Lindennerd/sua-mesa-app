@@ -13,9 +13,12 @@ import LandingPageLayout from './layouts/LandingPageLayout/LandingPageLayout'
 const Routes = () => {
   return (
     <Router>
-      <Route path="/setup" page={SetupPage} name="setup" />
       <Set wrap={LandingPageLayout}>
         <Route path="/" page={HomePage} name="home" />
+      </Set>
+      <Set private unauthenticated="home">
+        <Route path="/admin/{slug:String}" page={AdminPage} name="admin" />
+        <Route path="/setup" page={SetupPage} name="setup" />
       </Set>
       <Route path="/login" page={LoginPage} name="login" />
       <Route path="/signup" page={SignupPage} name="signup" />

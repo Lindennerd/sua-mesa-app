@@ -1,7 +1,7 @@
 import type {
-  QueryResolvers,
   MutationResolvers,
-  RestaurantRelationResolvers,
+  QueryResolvers,
+  RestaurantRelationResolvers
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
@@ -20,7 +20,22 @@ export const createRestaurant: MutationResolvers['createRestaurant'] = ({
   input,
 }) => {
   return db.restaurant.create({
-    data: input,
+    data: {
+      ...input,
+      slug: input.name.normalize("NFD").toLowerCase().replaceAll(' ', '-'),
+      RestaurantUser: {
+        connectOrCreate: {
+          where: {
+            id: context.currentUser.id
+          },
+          create: {
+            userId: context.currentUser.id,
+            roles: "OWNER"
+          }
+        },
+
+      }
+    },
   })
 }
 
