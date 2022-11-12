@@ -20064,6 +20064,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-input-mask@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "react-input-mask@npm:2.0.4"
+  dependencies:
+    invariant: ^2.2.4
+    warning: ^4.0.2
+  peerDependencies:
+    react: ">=0.14.0"
+    react-dom: ">=0.14.0"
+  checksum: 89fc110a99e79ee3fa3f63696d5d46ab8889c653b33c0e50c6b24d70b715e1c8d475b8637ceb9e0f4fcacec5e39f653156faef4f5f06972886c4b1e643f66a82
+  languageName: node
+  linkType: hard
+
 "react-inspector@npm:^5.1.0":
   version: 5.1.1
   resolution: "react-inspector@npm:5.1.1"
@@ -23723,6 +23736,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"warning@npm:^4.0.2":
+  version: 4.0.3
+  resolution: "warning@npm:4.0.3"
+  dependencies:
+    loose-envify: ^1.0.0
+  checksum: aebab445129f3e104c271f1637fa38e55eb25f968593e3825bd2f7a12bd58dc3738bb70dc8ec85826621d80b4acfed5a29ebc9da17397c6125864d72301b937e
+  languageName: node
+  linkType: hard
+
 "watchpack-chokidar2@npm:^2.0.1":
   version: 2.0.1
   resolution: "watchpack-chokidar2@npm:2.0.1"
@@ -23825,6 +23847,7 @@ __metadata:
     prop-types: 15.8.1
     react: 17.0.2
     react-dom: 17.0.2
+    react-input-mask: ^2.0.4
   languageName: unknown
   linkType: soft
 
