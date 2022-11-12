@@ -1,21 +1,29 @@
-import { Link, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
+import { createStyles } from '@mantine/core';
+import { useAuth } from '@redwoodjs/auth';
+import { MetaTags } from '@redwoodjs/web';
 
 const SetupPage = () => {
-  return (
-    <>
-      <MetaTags title="Setup" description="Setup page" />
+  const { currentUser } = useAuth();
+  const { classes } = useStyles();
 
-      <h1>SetupPage</h1>
-      <p>
-        Find me in <code>./web/src/pages/SetupPage/SetupPage.tsx</code>
-      </p>
-      <p>
-        My default route is named <code>setup</code>, link to me with `
-        <Link to={routes.setup()}>Setup</Link>`
-      </p>
-    </>
+  return (
+    <main className={classes.layout}>
+      <MetaTags title="Setup" description="Setup page" />
+      <h1>Bem vindo {currentUser?.name}</h1>
+      <p>Para iniciar, precisamos de algumas informações sobre o seu estabelecimento</p>
+
+    </main>
   )
 }
+
+const useStyles = createStyles(() => ({
+  layout: {
+    height: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
+  }
+}))
 
 export default SetupPage
