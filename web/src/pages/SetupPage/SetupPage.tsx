@@ -7,7 +7,9 @@ const SetupPage = () => {
   const { currentUser } = useAuth()
   const { classes } = useStyles()
 
-  function saveRestaurantInfo(info) {}
+  function saveRestaurantInfo(info) {
+    console.log(info)
+  }
 
   return (
     <main className={classes.layout}>

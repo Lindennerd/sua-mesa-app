@@ -1,6 +1,6 @@
 import { Button, InputBase, TextInput } from '@mantine/core'
 import { useState } from 'react'
-import { InputMask } from 'react-input-mask'
+import InputMask from "react-input-mask"
 
 interface Restaurant {
   name: string
@@ -61,7 +61,7 @@ const RestaurantForm = ({ restaurant, onSubmit }: RestaurantFormProps) => {
         }
       />
 
-      <Button variant="subtle" color="green">
+      <Button type='submit' variant="subtle" color="green">
         Salvar
       </Button>
     </form>
