@@ -2,7 +2,7 @@ import { createStyles, Loader, Title } from '@mantine/core'
 import { useAuth } from '@redwoodjs/auth'
 import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags, useMutation } from '@redwoodjs/web'
-import RestaurantForm from 'src/components/RestaurantForm/RestaurantForm'
+import RestaurantForm from 'src/components/Restaurant/RestaurantForm'
 import { CREATE_RESTAURANT_MUTATION } from 'src/graphql/restaurant'
 import { CreateRestaurantInput, CreateRestautant } from 'types/graphql'
 
@@ -79,6 +79,7 @@ const useStyles = createStyles(() => ({
   subtitle: {
     fontSize: '1.5em',
     textAlign: 'center',
+    color: 'white',
     textJustify: 'inter-word',
   },
 }))

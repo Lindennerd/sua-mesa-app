@@ -43,6 +43,9 @@ export const schema = gql`
 
     "Fetch a Restaurant by id."
     restaurant(id: Int!): Restaurant @requireAuth
+
+    "Fetch a Restaurant by slug"
+    restaurantBySlug(slug: String!): Restaurant @requireAuth
   }
 
   """

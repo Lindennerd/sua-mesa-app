@@ -27,6 +27,9 @@ export const schema = gql`
     "Description for description."
     description: String!
 
+    "Description for the image"
+    image: String!
+
     "Description for price."
     price: Float!
 

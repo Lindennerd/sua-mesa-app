@@ -16,6 +16,17 @@ export const restaurant: QueryResolvers['restaurant'] = ({ id }) => {
   })
 }
 
+export const restaurantBySlug: QueryResolvers['restaurantBySlug'] = ({ slug }) => {
+  return db.restaurant.findUnique({
+    where: { slug },
+    include: {
+      MenuItem: true,
+      RestaurantUser: true,
+      Table: true
+    }
+  })
+}
+
 export const createRestaurant: MutationResolvers['createRestaurant'] = ({
   input,
 }) => {

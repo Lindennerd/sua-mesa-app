@@ -66,6 +66,7 @@ model MenuItem {
   restaurantId Int
   createdAt    DateTime    @default(now())
   name         String
+  image        String
   description  String
   price        Decimal
   OrderItem    OrderItem[]

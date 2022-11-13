@@ -5893,6 +5893,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tabler/icons@npm:^1.111.0":
+  version: 1.111.0
+  resolution: "@tabler/icons@npm:1.111.0"
+  peerDependencies:
+    react: ^16.x || 17.x || 18.x
+    react-dom: ^16.x || 17.x || 18.x
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 68bd95c71392cb401a8129ae7f4877533f4e78b368559e00afb46effb88b87f48e39c3f9f573cda29cc84177e525657ab49bc9aa01409f0e17c6a0cd274d7aa1
+  languageName: node
+  linkType: hard
+
 "@testing-library/dom@npm:^8.0.0, @testing-library/dom@npm:^8.11.1":
   version: 8.19.0
   resolution: "@testing-library/dom@npm:8.19.0"
@@ -23844,6 +23859,7 @@ __metadata:
     "@redwoodjs/forms": 3.4.0
     "@redwoodjs/router": 3.4.0
     "@redwoodjs/web": 3.4.0
+    "@tabler/icons": ^1.111.0
     prop-types: 15.8.1
     react: 17.0.2
     react-dom: 17.0.2
