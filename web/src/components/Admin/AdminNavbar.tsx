@@ -42,26 +42,26 @@ const AdminNavbar = ({ opened, setMenuOpened }: Props) => {
           label="Pedidos"
           icon={<IconReceipt size={20} stroke={1.5} />}
           rightSection={<IconChevronRight size={12} stroke={1.5} />}
-          variant="filled"
-          color={theme.colors.gray[4]}
+          variant="light"
+          color="red"
           active={menuSelected === AdminMenus.ORDERS}
           onClick={(e) => openMenu(AdminMenus.ORDERS)}
         />
         <NavLink
           label="Menu"
           icon={<IconToolsKitchen size={20} stroke={1.5} />}
-          variant="filled"
+          variant="light"
           rightSection={<IconChevronRight size={12} stroke={1.5} />}
-          color={theme.colors.gray[4]}
+          color="red"
           active={menuSelected === AdminMenus.MENU}
           onClick={(e) => openMenu(AdminMenus.MENU)}
         />
         <NavLink
           label="Funcionários"
           icon={<IconUsers size={20} stroke={1.5} />}
-          variant="filled"
+          variant="light"
           rightSection={<IconChevronRight size={12} stroke={1.5} />}
-          color={theme.colors.gray[4]}
+          color="red"
           active={menuSelected === AdminMenus.EMPLOYEES}
           onClick={(e) => openMenu(AdminMenus.EMPLOYEES)}
         />
@@ -71,7 +71,7 @@ const AdminNavbar = ({ opened, setMenuOpened }: Props) => {
         <NavLink
           label="Configurações"
           icon={<IconSettings size={20} stroke={1.5} />}
-          variant="filled"
+          variant="light"
           rightSection={<IconChevronRight size={12} stroke={1.5} />}
         />
       </Navbar.Section>
