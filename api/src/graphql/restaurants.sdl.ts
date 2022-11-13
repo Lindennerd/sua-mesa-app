@@ -32,6 +32,9 @@ export const schema = gql`
 
     "Description for Table."
     Table: [Table]!
+
+    "Description for Categories"
+    Category: [Category]!
   }
 
   """

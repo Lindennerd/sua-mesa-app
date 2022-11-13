@@ -22,7 +22,8 @@ export const restaurantBySlug: QueryResolvers['restaurantBySlug'] = ({ slug }) =
     include: {
       MenuItem: true,
       RestaurantUser: true,
-      Table: true
+      Table: true,
+      Category: true
     }
   })
 }

@@ -39,6 +39,7 @@ model Restaurant {
   MenuItem       MenuItem[]
   Order          Order[]
   Table          Table[]
+  Category       Category[]
 }
 
 model RestaurantUser {
@@ -52,10 +53,12 @@ model RestaurantUser {
 }
 
 model Category {
-  id        Int        @id @default(autoincrement())
-  MenuItem  MenuItem[]
-  createdAt DateTime   @default(now())
-  name      String
+  id           Int        @id @default(autoincrement())
+  MenuItem     MenuItem[]
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime   @default(now())
+  name         String
+  restaurantId Int
 }
 
 model MenuItem {
