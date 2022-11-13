@@ -1,35 +1,12 @@
 import { Loader } from "@mantine/core";
 import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web';
+import { useEffect } from "react";
+import { useRestaurantAtom } from "src/atom/restaurant";
+import { QUERY_RESTAURANT_BY_SLUG } from "src/graphql/restaurant";
 import type { FindRestaurantBySlug, FindRestaurantBySlugVariables } from 'types/graphql';
 import RestaurantAdmin from './RestaurantAdmin';
 
-export const QUERY = gql`
-  query FindRestaurantBySlug($slug: String!) {
-    restaurantBySlug: restaurantBySlug(slug: $slug) {
-      id
-      name
-      MenuItem {
-        image
-        name
-        price
-        description
-        createdAt
-        category {
-          id
-          createdAt
-          name
-        }
-      }
-      RestaurantUser {
-        roles
-        user {
-          name
-          id
-        }
-      }
-    }
-  }
-`
+export const QUERY = QUERY_RESTAURANT_BY_SLUG;
 
 export const Loading = () => <div style={{
   display: "flex",
@@ -52,8 +29,15 @@ export const Failure = ({
 export const Success = ({
   restaurantBySlug,
 }: CellSuccessProps<FindRestaurantBySlug, FindRestaurantBySlugVariables>) => {
+  const [restaurant, setRestaurant] = useRestaurantAtom();
+  useEffect(() => {
+    setRestaurant(restaurantBySlug.id);
+  }, [restaurantBySlug])
+
+
   return <RestaurantAdmin
     menuItems={restaurantBySlug.MenuItem}
+    categories={restaurantBySlug.Category}
     employees={restaurantBySlug.RestaurantUser.filter(user => user.roles === "EMPLOYEE") ?? []}
     name={restaurantBySlug.name}
   />

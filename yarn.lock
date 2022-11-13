@@ -16043,6 +16043,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jotai@npm:^1.9.2":
+  version: 1.9.2
+  resolution: "jotai@npm:1.9.2"
+  peerDependencies:
+    "@babel/core": "*"
+    "@babel/template": "*"
+    immer: "*"
+    jotai-tanstack-query: "*"
+    jotai-urql: "*"
+    optics-ts: "*"
+    react: ">=16.8"
+    valtio: "*"
+    xstate: "*"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@babel/template":
+      optional: true
+    immer:
+      optional: true
+    jotai-tanstack-query:
+      optional: true
+    jotai-urql:
+      optional: true
+    optics-ts:
+      optional: true
+    valtio:
+      optional: true
+    xstate:
+      optional: true
+  checksum: 18cac5eb728205b7c3f9cb8d8e44902eafc9e288a6e4dbd28821d092d5b8301447fef15908b50994840ec38ce0e0f341c5d0ca605fcf5d058dda88e3d9dc77df
+  languageName: node
+  linkType: hard
+
 "js-levenshtein@npm:^1.1.6":
   version: 1.1.6
   resolution: "js-levenshtein@npm:1.1.6"
@@ -23860,6 +23894,7 @@ __metadata:
     "@redwoodjs/router": 3.4.0
     "@redwoodjs/web": 3.4.0
     "@tabler/icons": ^1.111.0
+    jotai: ^1.9.2
     prop-types: 15.8.1
     react: 17.0.2
     react-dom: 17.0.2
