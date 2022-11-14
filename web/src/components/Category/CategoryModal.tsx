@@ -1,4 +1,4 @@
-import { LoadingOverlay, Modal } from '@mantine/core'
+import { FocusTrap, LoadingOverlay, Modal } from '@mantine/core'
 import { useMutation } from '@redwoodjs/web'
 import { useRestaurantAtom } from 'src/atom/restaurant'
 import { CREATE_CATEGORY } from 'src/graphql/category'
@@ -51,7 +51,9 @@ const CategoryModal = ({ open, onClose }: Props) => {
   return (
     <Modal opened={open} onClose={onClose} title="Categoria">
       <LoadingOverlay visible={loading} />
-      <CategoryForm onSubmit={saveCategory} />
+      <FocusTrap active={true}>
+        <CategoryForm onSubmit={saveCategory} />
+      </FocusTrap>
     </Modal>
   )
 }

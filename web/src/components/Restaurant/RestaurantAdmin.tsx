@@ -22,6 +22,7 @@ const RestaurantAdmin = ({ name, menuItems, employees, categories }: RestaurantA
     <AppShell
       navbarOffsetBreakpoint="sm"
       asideOffsetBreakpoint="sm"
+      padding={1}
       navbar={
         <AdminNavbar
           opened={opened}
