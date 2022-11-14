@@ -10,6 +10,7 @@ export const QUERY_RESTAURANT_BY_SLUG = gql`
     restaurantBySlug: restaurantBySlug(slug: $slug) {
       id
       name
+      slug
       MenuItem {
         image
         name

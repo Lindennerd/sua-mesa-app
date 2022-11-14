@@ -5,6 +5,7 @@ const CategoryForm = ({
   onSubmit,
 }: {
   onSubmit: (category: string) => void
+
 }) => {
   const [category, setCategory] = useState('')
   const categoryRef = useRef<HTMLInputElement>(null)
@@ -14,12 +15,15 @@ const CategoryForm = ({
   }, [])
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(category);
+    e.preventDefault()
+    onSubmit(category)
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}>
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: 'flex', flexDirection: 'column', gap: '1em' }}
+    >
       <TextInput
         label="Nome da Categoria"
         ref={categoryRef}
@@ -27,7 +31,7 @@ const CategoryForm = ({
         onChange={(e) => setCategory(e.target.value)}
         tabIndex={0}
       />
-      <Button variant="outline" color="red">
+      <Button variant="outline" color="red" type="submit">
         Salvar
       </Button>
     </form>

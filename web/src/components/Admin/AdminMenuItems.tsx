@@ -16,6 +16,8 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
       <Box style={{ display: 'flex', gap: '1em', width: '100%' }}>
         <Select
           style={{ flex: '1' }}
+          searchable
+          nothingFound="Nenhuma categoria encontrada"
           placeholder="Categorias nas quais estão divididos os itens"
           data={
             categories.map((it) => ({
@@ -24,12 +26,19 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
             })) ?? []
           }
         />
-        <Button variant="outline" color="red" onClick={e => setModalOpen(true)}>
+        <Button
+          variant="outline"
+          color="red"
+          onClick={(e) => setModalOpen(true)}
+        >
           Adicionar
         </Button>
       </Box>
 
-      <CategoryModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <CategoryModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </>
   )
 }

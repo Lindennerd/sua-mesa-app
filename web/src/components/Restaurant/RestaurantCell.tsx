@@ -1,4 +1,4 @@
-import { Loader } from "@mantine/core";
+import { LoadingOverlay } from "@mantine/core";
 import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web';
 import { useEffect } from "react";
 import { useRestaurantAtom } from "src/atom/restaurant";
@@ -8,15 +8,16 @@ import RestaurantAdmin from './RestaurantAdmin';
 
 export const QUERY = QUERY_RESTAURANT_BY_SLUG;
 
-export const Loading = () => <div style={{
-  display: "flex",
-  flexDirection:"column",
-  alignItems: "center",
-  justifyContent: "center",
-  height: "100vh",
-}}>
-  <Loader />
-</div>
+export const beforeQuery = (props) => {
+  return {
+    variables: props,
+    fetchPolicy: 'cache-and-network',
+  }
+}
+
+export const Loading = () => <>
+  <LoadingOverlay visible={true} />
+</>
 
 export const Empty = () => <div>Empty</div>
 
@@ -31,7 +32,10 @@ export const Success = ({
 }: CellSuccessProps<FindRestaurantBySlug, FindRestaurantBySlugVariables>) => {
   const [restaurant, setRestaurant] = useRestaurantAtom();
   useEffect(() => {
-    setRestaurant(restaurantBySlug.id);
+    setRestaurant({
+      id: restaurantBySlug.id,
+      slug: restaurantBySlug.slug
+    })
   }, [restaurantBySlug])
 
 

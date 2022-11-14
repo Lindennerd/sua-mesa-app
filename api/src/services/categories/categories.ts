@@ -1,7 +1,5 @@
 import type {
-  QueryResolvers,
-  MutationResolvers,
-  CategoryRelationResolvers,
+  CategoryRelationResolvers, MutationResolvers, QueryResolvers
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
@@ -20,7 +18,10 @@ export const createCategory: MutationResolvers['createCategory'] = ({
   input,
 }) => {
   return db.category.create({
-    data: input,
+    data: {
+      name: input.name,
+      restaurantId: input.restaurantId
+    },
   })
 }
 

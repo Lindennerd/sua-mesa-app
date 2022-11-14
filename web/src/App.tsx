@@ -9,8 +9,8 @@ import * as theme from 'config/mantine.config'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
-import './scaffold.css'
 import './index.css'
+import './scaffold.css'
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
