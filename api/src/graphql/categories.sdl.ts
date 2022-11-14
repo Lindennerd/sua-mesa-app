@@ -33,6 +33,8 @@ export const schema = gql`
   input CreateCategoryInput {
     "Description for name."
     name: String!
+    "Description for Restaurant Id"
+    restaurantId: Int!
   }
 
   """

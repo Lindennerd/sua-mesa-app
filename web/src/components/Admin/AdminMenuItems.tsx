@@ -1,22 +1,35 @@
 import { Box, Button, Select } from '@mantine/core'
-import { MenuItem } from 'types/graphql'
+import { useState } from 'react'
+import { Category, MenuItem } from 'types/graphql'
+import CategoryModal from '../Category/CategoryModal'
 
-const AdminMenuItems = ({ menuItems }: { menuItems: MenuItem[] }) => {
+interface Props {
+  menuItems: MenuItem[]
+  categories: Category[]
+}
+
+const AdminMenuItems = ({ menuItems, categories }: Props) => {
+  const [modalOpen, setModalOpen] = useState(false)
+
   return (
     <>
-      <Box style={{display: "flex", gap: "1em", width: "100%"}}>
+      <Box style={{ display: 'flex', gap: '1em', width: '100%' }}>
         <Select
-          style={{flex: "1"}}
+          style={{ flex: '1' }}
           placeholder="Categorias nas quais estão divididos os itens"
           data={
-            menuItems.map((it) => ({
-              value: it.category.id.toString(),
-              label: it.category.name,
+            categories.map((it) => ({
+              value: it.id.toString(),
+              label: it.name,
             })) ?? []
           }
         />
-        <Button>Adicionar</Button>
+        <Button variant="outline" color="red" onClick={e => setModalOpen(true)}>
+          Adicionar
+        </Button>
       </Box>
+
+      <CategoryModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   )
 }

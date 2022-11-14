@@ -9,10 +9,11 @@ import AdminNavbar, { AdminMenus } from '../Admin/AdminNavbar'
 interface RestaurantAdminProps {
   name: string,
   menuItems: any[],
-  employees: any[]
+  employees: any[],
+  categories: any[]
 }
 
-const RestaurantAdmin = ({ name, menuItems, employees }: RestaurantAdminProps) => {
+const RestaurantAdmin = ({ name, menuItems, employees, categories }: RestaurantAdminProps) => {
   const theme = useMantineTheme()
   const [opened, setOpened] = useState(false)
   const [menu, setMenu] = useState<AdminMenus>(AdminMenus.ORDERS)
@@ -34,7 +35,7 @@ const RestaurantAdmin = ({ name, menuItems, employees }: RestaurantAdminProps) =
       <AdminContent
         menu={menu}
         employees={<AdminEmployees employees={employees} />}
-        menuItems={<AdminMenuItems menuItems={menuItems} />}
+        menuItems={<AdminMenuItems menuItems={menuItems} categories={categories} />}
       />
     </AppShell>
   )
