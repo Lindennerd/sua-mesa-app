@@ -16,15 +16,17 @@ export const restaurant: QueryResolvers['restaurant'] = ({ id }) => {
   })
 }
 
-export const restaurantBySlug: QueryResolvers['restaurantBySlug'] = ({ slug }) => {
+export const restaurantBySlug: QueryResolvers['restaurantBySlug'] = ({
+  slug,
+}) => {
   return db.restaurant.findUnique({
     where: { slug },
     include: {
       MenuItem: true,
       RestaurantUser: true,
       Table: true,
-      Category: true
-    }
+      Category: true,
+    },
   })
 }
 
@@ -34,19 +36,22 @@ export const createRestaurant: MutationResolvers['createRestaurant'] = ({
   return db.restaurant.create({
     data: {
       ...input,
-      slug: input.name.normalize("NFD").toLowerCase().replaceAll(' ', '-'),
+      slug: input.name
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replaceAll(' ', '-'),
       RestaurantUser: {
         connectOrCreate: {
           where: {
-            id: context.currentUser.id
+            id: context.currentUser.id,
           },
           create: {
             userId: context.currentUser.id,
-            roles: "OWNER"
-          }
+            roles: 'OWNER',
+          },
         },
-
-      }
+      },
     },
   })
 }

@@ -66,6 +66,8 @@ export const schema = gql`
 
     "Description for price."
     price: Float!
+    "Description for the image"
+    image: String!
   }
 
   """
@@ -86,6 +88,8 @@ export const schema = gql`
 
     "Description for price."
     price: Float
+    "Description for the image"
+    image: String!
   }
 
   """

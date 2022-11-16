@@ -4,13 +4,15 @@ import { navigate, routes } from '@redwoodjs/router'
 import { MetaTags, useMutation } from '@redwoodjs/web'
 import RestaurantForm from 'src/components/Restaurant/RestaurantForm'
 import { CREATE_RESTAURANT_MUTATION } from 'src/graphql/restaurant'
+import { supabase } from 'src/lib/supabase'
 import { CreateRestaurantInput, CreateRestautant } from 'types/graphql'
 
 const SetupPage = () => {
   const { currentUser } = useAuth()
   const { classes } = useStyles()
-  const [createRestaurant, { loading, error }] =
-    useMutation<CreateRestautant>(CREATE_RESTAURANT_MUTATION)
+  const [createRestaurant, { loading, error }] = useMutation<CreateRestautant>(
+    CREATE_RESTAURANT_MUTATION
+  )
 
   async function saveRestaurantInfo(info: CreateRestaurantInput) {
     const restaurantData = await createRestaurant({
@@ -21,7 +23,12 @@ const SetupPage = () => {
           phone: info.phone,
         },
       },
-    });
+    })
+
+    await supabase.storage.createBucket(
+      restaurantData.data.createRestaurant.slug,
+      { public: true }
+    )
 
     navigate(routes.admin({ slug: restaurantData.data.createRestaurant.slug }))
   }

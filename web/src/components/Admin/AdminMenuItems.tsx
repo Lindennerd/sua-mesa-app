@@ -1,10 +1,23 @@
-import { ActionIcon, createStyles, Flex, Group, Menu, Paper, Text, TextInput } from '@mantine/core'
 import {
-  IconCategory, IconPlus, IconSearch, IconToolsKitchen
+  ActionIcon,
+  createStyles,
+  Flex,
+  Group,
+  Menu,
+  Paper,
+  Text,
+  TextInput
+} from '@mantine/core'
+import {
+  IconCategory,
+  IconPlus,
+  IconSearch,
+  IconToolsKitchen
 } from '@tabler/icons'
 import { useState } from 'react'
 import { Category, MenuItem } from 'types/graphql'
 import CategoryModal from '../Category/CategoryModal'
+import MenuItemModal from '../Menu/MenuItemModal'
 
 interface Props {
   menuItems: MenuItem[]
@@ -15,6 +28,7 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
   const { classes, theme } = useClasses()
 
   const [modalCategoriesOpen, setModalCategoriesOpen] = useState(false)
+  const [modalMenuItemOpen, setModalMenuItemOpen] = useState(false)
 
   return (
     <>
@@ -28,7 +42,10 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
           </Menu.Target>
 
           <Menu.Dropdown>
-            <Menu.Item icon={<IconToolsKitchen size={14} />}>
+            <Menu.Item
+              icon={<IconToolsKitchen size={14} />}
+              onClick={(e) => setModalMenuItemOpen(true)}
+            >
               Adicionar item ao menu
             </Menu.Item>
             <Menu.Item
@@ -52,16 +69,31 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
         {categories &&
           categories.map((cat) => (
             <Group key={cat.id} title={cat.name}>
-              <Paper shadow={"sm"} withBorder p={"md"}>
+              <Paper
+                style={{ width: '100%' }}
+                shadow={'sm'}
+                withBorder
+                p={'sm'}
+              >
                 <Text>{cat.name}</Text>
+                <Group></Group>
               </Paper>
             </Group>
           ))}
+        {menuItems && menuItems.map(item => (
+          <div key={item.id}>{item.name}</div>
+        ))}
       </Flex>
 
       <CategoryModal
         open={modalCategoriesOpen}
         onClose={() => setModalCategoriesOpen(false)}
+      />
+
+      <MenuItemModal
+        categories={categories}
+        open={modalMenuItemOpen}
+        onClose={() => setModalMenuItemOpen(false)}
       />
     </>
   )
@@ -75,8 +107,8 @@ const useClasses = createStyles({
     justifyContent: 'space-between',
   },
   content: {
-    padding: '1em'
-  }
+    padding: '1em',
+  },
 })
 
 export default AdminMenuItems

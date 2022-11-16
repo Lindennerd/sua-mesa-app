@@ -4,6 +4,7 @@ const restaurantAtom = atom({
   slug: ""
 });
 
+// atom to store restaurant info
 export const useRestaurantAtom = () => {
   return useAtom(restaurantAtom);
 }

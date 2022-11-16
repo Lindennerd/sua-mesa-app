@@ -24,9 +24,6 @@ const CategoryModal = ({ open, onClose }: Props) => {
           slug: restaurant.slug,
         },
       })
-
-      console.log(createCategory)
-
       cache.writeQuery({
         query: QUERY_RESTAURANT_BY_SLUG,
         data: {

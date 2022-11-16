@@ -9,6 +9,8 @@ import * as theme from 'config/mantine.config'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import './index.css'
 import './scaffold.css'
 
@@ -18,6 +20,7 @@ const App = () => (
       <MantineProvider theme={theme}>
         <AuthProvider type="dbAuth">
           <RedwoodApolloProvider>
+            <ToastContainer />
             <Routes />
           </RedwoodApolloProvider>
         </AuthProvider>
