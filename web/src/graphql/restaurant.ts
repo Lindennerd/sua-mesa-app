@@ -12,6 +12,7 @@ export const QUERY_RESTAURANT_BY_SLUG = gql`
       name
       slug
       MenuItem {
+        id
         image
         name
         price

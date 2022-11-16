@@ -1,15 +1,19 @@
 import {
   ActionIcon,
   Badge,
+  Button,
   createStyles,
   Flex,
   Image,
+  LoadingOverlay,
   Menu,
+  Modal,
   Text,
   Title
 } from '@mantine/core'
 import { IconDotsVertical, IconEdit, IconTrash } from '@tabler/icons'
 import { useState } from 'react'
+import { useMenuItemMutation } from 'src/hooks/useMenuItemMutation'
 import { Category, MenuItem } from 'types/graphql'
 import MenuItemModal from './MenuItemModal'
 
@@ -21,6 +25,23 @@ interface Props {
 export const AdminMenuItem = ({ menuItem, categories }: Props) => {
   const { classes } = useClasses()
   const [modalMenuItemOpen, setModalMenuItemOpen] = useState(false)
+  const [modalDeleteMenuItemOpen, setModalDeleteMenuItemOpen] = useState(false)
+    const { remove } = useMenuItemMutation()
+
+
+  const deleteMutation = remove({
+    onCompleted() {
+      setModalDeleteMenuItemOpen(false);
+    }
+  });
+
+  function removeItem() {
+    deleteMutation.deleteMenuItem({
+      variables: {
+        deleteMenuItemId: menuItem.id,
+      },
+    })
+  }
 
   return (
     <>
@@ -53,7 +74,11 @@ export const AdminMenuItem = ({ menuItem, categories }: Props) => {
             >
               Editar
             </Menu.Item>
-            <Menu.Item color="red" icon={<IconTrash size={14} />}>
+            <Menu.Item
+              onClick={(e) => setModalDeleteMenuItemOpen(true)}
+              color="red"
+              icon={<IconTrash size={14} />}
+            >
               Excluir
             </Menu.Item>
           </Menu.Dropdown>
@@ -66,6 +91,22 @@ export const AdminMenuItem = ({ menuItem, categories }: Props) => {
         onClose={() => setModalMenuItemOpen(false)}
         item={menuItem}
       />
+
+      <Modal
+        opened={modalDeleteMenuItemOpen}
+        onClose={() => setModalDeleteMenuItemOpen(false)}
+        title={`Deletar ${menuItem.name}`}
+        size="lg"
+      >
+        <LoadingOverlay visible={deleteMutation.loading} />
+        <Text align="center">
+          Tem certeza que deseja remover o item {menuItem.name} ?
+        </Text>
+        <Flex gap="md" justify="space-between" mt="lg">
+          <Button onClick={e => removeItem()} color="red">Sim, eu tenho certeza</Button>
+          <Button onClick={e => setModalDeleteMenuItemOpen(false)}>Não, eu quero cancelar essa ação</Button>
+        </Flex>
+      </Modal>
     </>
   )
 }
