@@ -10,20 +10,16 @@ import {
 } from '@mantine/core'
 import { IconCoin } from '@tabler/icons'
 import { ChangeEvent, useRef, useState } from 'react'
-import { toast } from 'react-toastify'
-import { useRestaurantAtom } from 'src/atom/restaurant'
-import { bucketBase, supabase } from 'src/lib/supabase'
 import { Category, MenuItem } from 'types/graphql'
 
 interface Props {
   categories: Category[]
   item?: MenuItem
-  onSubmit: (item: MenuItem) => void
+  onSubmit: (item: MenuItem, file: FileList) => void
 }
 
 const MenuItemForm = ({ categories, item, onSubmit }: Props) => {
   const { classes } = useStyles()
-  const [restaurant] = useRestaurantAtom();
   const [menuItemForm, setMenuItemForm] = useState<MenuItem | undefined>(item)
   const [image, setImage] = useState<string>(
     item?.image ?? 'https://api.lorem.space/image/burger?w=300&h=300'
@@ -43,27 +39,9 @@ const MenuItemForm = ({ categories, item, onSubmit }: Props) => {
     }
   }
 
-  async function handleSubmit(e : React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    if (imageInput.current && imageInput.current.files.length) {
-      const { data, error } = await supabase.storage
-        .from(restaurant.slug)
-        .upload(
-          menuItemForm.name.normalize('NFD').replace(/[\u0300-\u036f]/g, ''),
-          imageInput.current.files[0],
-          { cacheControl: '3600', upsert: true }
-        )
-
-      if (error) {
-        toast.error("Ops... Ocorreu um erro!");
-        console.error(error);
-        return;
-      }
-
-      setMenuItemForm(form => ({...form, image: `${bucketBase}/${restaurant.slug}/${data.path}`}))
-    }
-    onSubmit(menuItemForm);
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    onSubmit(menuItemForm, imageInput.current.files)
   }
 
   return (
@@ -102,7 +80,10 @@ const MenuItemForm = ({ categories, item, onSubmit }: Props) => {
           placeholder="Categoria"
           value={menuItemForm?.categoryId?.toString() ?? ''}
           onChange={(value) =>
-            setMenuItemForm((form) => ({ ...form, categoryId: parseInt(value) }))
+            setMenuItemForm((form) => ({
+              ...form,
+              categoryId: parseInt(value),
+            }))
           }
           data={categories.map((c) => {
             return {

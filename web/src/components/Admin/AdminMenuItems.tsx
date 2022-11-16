@@ -4,19 +4,13 @@ import {
   Flex,
   Group,
   Menu,
-  Paper,
-  Text,
-  TextInput
+  Text
 } from '@mantine/core'
-import {
-  IconCategory,
-  IconPlus,
-  IconSearch,
-  IconToolsKitchen
-} from '@tabler/icons'
+import { IconCategory, IconPlus, IconToolsKitchen } from '@tabler/icons'
 import { useState } from 'react'
 import { Category, MenuItem } from 'types/graphql'
 import CategoryModal from '../Category/CategoryModal'
+import { AdminMenuItem } from '../Menu/AdminMenuItem'
 import MenuItemModal from '../Menu/MenuItemModal'
 
 interface Props {
@@ -58,31 +52,15 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
         </Menu>
       </Group>
 
-      <Flex direction={'column'} className={classes.content} gap="md">
-        <Group grow={true}>
-          <TextInput
-            icon={<IconSearch />}
-            placeholder="Filtrar items"
-            width={'100%'}
-          />
-        </Group>
-        {categories &&
-          categories.map((cat) => (
-            <Group key={cat.id} title={cat.name}>
-              <Paper
-                style={{ width: '100%' }}
-                shadow={'sm'}
-                withBorder
-                p={'sm'}
-              >
-                <Text>{cat.name}</Text>
-                <Group></Group>
-              </Paper>
-            </Group>
+      <Flex direction="column">
+        {menuItems &&
+          menuItems.map((item, index) => (
+            <AdminMenuItem
+              menuItem={item}
+              categories={categories}
+              key={index}
+            />
           ))}
-        {menuItems && menuItems.map(item => (
-          <div key={item.id}>{item.name}</div>
-        ))}
       </Flex>
 
       <CategoryModal
