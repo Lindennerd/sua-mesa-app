@@ -27,7 +27,7 @@ const AdminHeader = ({ opened, setOpened, name }: Props) => {
             opened={opened}
             onClick={() => setOpened(!opened)}
             size="sm"
-            color='white'
+            color="white"
             mr="xl"
           />
         </MediaQuery>

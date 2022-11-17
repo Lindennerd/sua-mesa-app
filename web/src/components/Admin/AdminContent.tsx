@@ -1,5 +1,5 @@
-import { AdminMenus } from "./AdminNavbar";
-import AdminOrders from "./AdminOrders";
+import { AdminMenus } from './AdminNavbar'
+import AdminOrders from './AdminOrders'
 
 interface Props {
   menuItems: React.ReactNode
@@ -7,15 +7,15 @@ interface Props {
   menu: AdminMenus
 }
 
-const AdminContent = ({menu, menuItems, employees}: Props) => {
+const AdminContent = ({ menu, menuItems, employees }: Props) => {
   switch (menu) {
     case AdminMenus.EMPLOYEES:
       return <>{employees}</>
     case AdminMenus.MENU:
       return <>{menuItems}</>
     case AdminMenus.ORDERS:
-      return  <AdminOrders />
+      return <AdminOrders />
   }
 }
 
-export default AdminContent;
+export default AdminContent

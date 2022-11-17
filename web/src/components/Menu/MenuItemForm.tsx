@@ -1,3 +1,5 @@
+import { ChangeEvent, useRef, useState } from 'react'
+
 import {
   Button,
   createStyles,
@@ -9,7 +11,6 @@ import {
   Tooltip
 } from '@mantine/core'
 import { IconCoin } from '@tabler/icons'
-import { ChangeEvent, useRef, useState } from 'react'
 import { Category, MenuItem } from 'types/graphql'
 
 interface Props {
@@ -51,9 +52,15 @@ const MenuItemForm = ({ categories, item, onSubmit }: Props) => {
           <Tooltip label="Alterar imagem">
             <a
               className={classes.uploadImage}
-              onClick={(e) => handleClickImage()}
+              onClick={() => handleClickImage()}
             >
-              <img width={300} className={classes.image} src={image} alt="" />
+              <img
+                width="auto"
+                height={160}
+                className={classes.image}
+                src={image}
+                alt=""
+              />
             </a>
           </Tooltip>
           <input

@@ -1,12 +1,13 @@
-import { LoadingOverlay, Modal } from '@mantine/core'
 import { useEffect, useState } from 'react'
+
+import { LoadingOverlay, Modal } from '@mantine/core'
 import { toast } from 'react-toastify'
+import { Category, MenuItem } from 'types/graphql'
+
 import { useRestaurantAtom } from 'src/atom/restaurant'
 import { useMenuItemMutation } from 'src/hooks/useMenuItemMutation'
 import { bucketBase, supabase } from 'src/lib/supabase'
-import {
-  Category, MenuItem
-} from 'types/graphql'
+
 import MenuItemForm from './MenuItemForm'
 
 interface Props {
@@ -19,18 +20,18 @@ interface Props {
 const MenuItemModal = ({ open, onClose, categories, item }: Props) => {
   const [restaurant] = useRestaurantAtom()
   const [isLoading, setIsLoading] = useState(false)
-  const { create, update } = useMenuItemMutation();
+  const { create, update } = useMenuItemMutation()
 
   const createMutation = create({
     onCompleted() {
       onClose()
-    }
-  });
+    },
+  })
 
   const updateMutation = update({
     onCompleted() {
       onClose()
-    }
+    },
   })
 
   useEffect(() => {
@@ -58,12 +59,12 @@ const MenuItemModal = ({ open, onClose, categories, item }: Props) => {
       imageUrl = `${bucketBase}/${restaurant.slug}/${data.path}`
     }
 
-    return imageUrl;
+    return imageUrl
   }
 
   async function edit(menuItem: MenuItem, file: FileList) {
     setIsLoading(true)
-    let imageUrl = await imageUpload(menuItem.name, file)
+    const imageUrl = await imageUpload(menuItem.name, file)
 
     await updateMutation.updateMenuItem({
       variables: {
@@ -77,7 +78,7 @@ const MenuItemModal = ({ open, onClose, categories, item }: Props) => {
           image: imageUrl,
         },
       },
-      optimisticResponse(vars) {
+      optimisticResponse() {
         return {
           updateMenuItem: {
             ...menuItem,
@@ -93,7 +94,7 @@ const MenuItemModal = ({ open, onClose, categories, item }: Props) => {
 
   async function save(menuItem: MenuItem, file: FileList) {
     setIsLoading(true)
-    let imageUrl = await imageUpload(menuItem.name, file)
+    const imageUrl = await imageUpload(menuItem.name, file)
 
     await createMutation.createMenuItem({
       variables: {
@@ -106,13 +107,13 @@ const MenuItemModal = ({ open, onClose, categories, item }: Props) => {
           image: imageUrl,
         },
       },
-      optimisticResponse(vars) {
+      optimisticResponse() {
         return {
           createMenuItem: {
             ...menuItem,
             image: imageUrl,
             category: {} as Category,
-            createdAt: new Date().toLocaleDateString()
+            createdAt: new Date().toLocaleDateString(),
           },
         }
       },
@@ -120,9 +121,18 @@ const MenuItemModal = ({ open, onClose, categories, item }: Props) => {
   }
 
   return (
-    <Modal opened={open} onClose={onClose} title={item ? `Editando ${item.name}`: "Novo Item"}>
+    <Modal
+      size="auto"
+      opened={open}
+      onClose={onClose}
+      title={item ? `Editando ${item.name}` : 'Novo Item'}
+    >
       <LoadingOverlay visible={isLoading} />
-      <MenuItemForm categories={categories} onSubmit={item ? edit : save} item={item} />
+      <MenuItemForm
+        categories={categories}
+        onSubmit={item ? edit : save}
+        item={item}
+      />
     </Modal>
   )
 }

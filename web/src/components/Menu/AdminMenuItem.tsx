@@ -103,13 +103,13 @@ export const AdminMenuItem = ({ menuItem, categories }: Props) => {
         opened={modalDeleteMenuItemOpen}
         onClose={() => setModalDeleteMenuItemOpen(false)}
         title={`Deletar ${menuItem.name}`}
-        size="lg"
+        size="auto"
       >
         <LoadingOverlay visible={deleteMutation.loading} />
         <Text align="center">
           Tem certeza que deseja remover o item {menuItem.name} ?
         </Text>
-        <Flex gap="md" justify="space-between" mt="lg">
+        <Flex gap="md" justify="space-between" direction="column" mt="lg">
           <Button onClick={() => removeItem()} color="red">
             Sim, eu tenho certeza
           </Button>

@@ -1,9 +1,12 @@
 import { FocusTrap, LoadingOverlay, Modal } from '@mantine/core'
+import { FindRestaurantBySlug } from 'types/graphql'
+
 import { useMutation } from '@redwoodjs/web'
+
 import { useRestaurantAtom } from 'src/atom/restaurant'
 import { CREATE_CATEGORY } from 'src/graphql/category'
 import { QUERY_RESTAURANT_BY_SLUG } from 'src/graphql/restaurant'
-import { CreateCategory, FindRestaurantBySlug } from 'types/graphql'
+
 import CategoryForm from './CategoryForm'
 
 interface Props {
@@ -13,8 +16,8 @@ interface Props {
 
 const CategoryModal = ({ open, onClose }: Props) => {
   const [restaurant] = useRestaurantAtom()
-  const [createCategory, { loading, error }] = useMutation(CREATE_CATEGORY, {
-    onCompleted(data: CreateCategory) {
+  const [createCategory, { loading }] = useMutation(CREATE_CATEGORY, {
+    onCompleted() {
       onClose()
     },
     update(cache, { data: { createCategory } }) {
@@ -29,7 +32,7 @@ const CategoryModal = ({ open, onClose }: Props) => {
         data: {
           restaurantBySlug: {
             ...data.restaurantBySlug,
-            Category: data.restaurantBySlug.Category.concat([createCategory])
+            Category: data.restaurantBySlug.Category.concat([createCategory]),
           },
         },
       })
@@ -46,7 +49,7 @@ const CategoryModal = ({ open, onClose }: Props) => {
   }
 
   return (
-    <Modal opened={open} onClose={onClose} title="Categoria">
+    <Modal size="auto" opened={open} onClose={onClose} title="Categoria">
       <LoadingOverlay visible={loading} />
       <FocusTrap active={true}>
         <CategoryForm onSubmit={saveCategory} />

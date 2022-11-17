@@ -58,14 +58,14 @@ const AdminEmployeeView = ({ restaurantUser }: Props) => {
         opened={modalEmployeeOpen}
         onClose={() => setModalDeleteEmployeeOpen(false)}
         title={`Deletar ${restaurantUser.user.name}`}
-        size="lg"
+        size="auto"
       >
         <LoadingOverlay visible={deleteMutation.loading} />
         <Text align="center">
-          Tem certeza que deseja remover o funcionário
-          {restaurantUser.user.name} ?
+          Tem certeza que deseja remover o funcionário{' '}
+          {restaurantUser.user.name}?
         </Text>
-        <Flex gap="md" justify="space-between" mt="lg">
+        <Flex gap="md" justify="space-between" direction="column" mt="lg">
           <Button onClick={() => removeEmployee()} color="red">
             Sim, eu tenho certeza
           </Button>

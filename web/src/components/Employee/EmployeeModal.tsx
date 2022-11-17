@@ -16,7 +16,12 @@ export const EmployeeModal = ({ openned, onClose, onSignUp }: Props) => {
   }
 
   return (
-    <Modal opened={openned} onClose={onClose} title="Registro de Funcionário">
+    <Modal
+      size="auto"
+      opened={openned}
+      onClose={onClose}
+      title="Registro de Funcionário"
+    >
       <RegisterForm onSignUp={handleSignUp} />
     </Modal>
   )

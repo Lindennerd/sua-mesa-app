@@ -48,8 +48,8 @@ const AdminEmployees = ({ employees }: { employees: RestaurantUser[] }) => {
 
       <Flex direction="column">
         {employeesDisplay &&
-          employeesDisplay.map((user) => (
-            <AdminEmployeeView key={user.id} restaurantUser={user} />
+          employeesDisplay.map((user, index) => (
+            <AdminEmployeeView key={index} restaurantUser={user} />
           ))}
       </Flex>
 
