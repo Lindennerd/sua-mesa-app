@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import {
   ActionIcon,
   Badge,
@@ -12,9 +14,10 @@ import {
   Title
 } from '@mantine/core'
 import { IconDotsVertical, IconEdit, IconTrash } from '@tabler/icons'
-import { useState } from 'react'
-import { useMenuItemMutation } from 'src/hooks/useMenuItemMutation'
 import { Category, MenuItem } from 'types/graphql'
+
+import { useMenuItemMutation } from 'src/hooks/useMenuItemMutation'
+
 import MenuItemModal from './MenuItemModal'
 
 interface Props {
@@ -26,14 +29,13 @@ export const AdminMenuItem = ({ menuItem, categories }: Props) => {
   const { classes } = useClasses()
   const [modalMenuItemOpen, setModalMenuItemOpen] = useState(false)
   const [modalDeleteMenuItemOpen, setModalDeleteMenuItemOpen] = useState(false)
-    const { remove } = useMenuItemMutation()
-
+  const { remove } = useMenuItemMutation()
 
   const deleteMutation = remove({
     onCompleted() {
-      setModalDeleteMenuItemOpen(false);
-    }
-  });
+      setModalDeleteMenuItemOpen(false)
+    },
+  })
 
   function removeItem() {
     deleteMutation.deleteMenuItem({
@@ -46,9 +48,14 @@ export const AdminMenuItem = ({ menuItem, categories }: Props) => {
   return (
     <>
       <Flex p="sm" justify="space-between" className={classes.menuItem}>
-        <Flex p="sm" gap="sm">
+        <Flex p="sm" gap="sm" align="center">
           <div style={{ borderRadius: '20' }}>
-            <Image src={menuItem.image} width={160} alt={menuItem.name} />
+            <Image
+              src={menuItem.image}
+              width="auto"
+              height={100}
+              alt={menuItem.name}
+            />
           </div>
           <Flex direction="column" gap="sm">
             <div>
@@ -69,13 +76,13 @@ export const AdminMenuItem = ({ menuItem, categories }: Props) => {
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item
-              onClick={(e) => setModalMenuItemOpen(true)}
+              onClick={() => setModalMenuItemOpen(true)}
               icon={<IconEdit size={14} />}
             >
               Editar
             </Menu.Item>
             <Menu.Item
-              onClick={(e) => setModalDeleteMenuItemOpen(true)}
+              onClick={() => setModalDeleteMenuItemOpen(true)}
               color="red"
               icon={<IconTrash size={14} />}
             >
@@ -103,8 +110,12 @@ export const AdminMenuItem = ({ menuItem, categories }: Props) => {
           Tem certeza que deseja remover o item {menuItem.name} ?
         </Text>
         <Flex gap="md" justify="space-between" mt="lg">
-          <Button onClick={e => removeItem()} color="red">Sim, eu tenho certeza</Button>
-          <Button onClick={e => setModalDeleteMenuItemOpen(false)}>Não, eu quero cancelar essa ação</Button>
+          <Button onClick={() => removeItem()} color="red">
+            Sim, eu tenho certeza
+          </Button>
+          <Button onClick={() => setModalDeleteMenuItemOpen(false)}>
+            Não, eu quero cancelar essa ação
+          </Button>
         </Flex>
       </Modal>
     </>

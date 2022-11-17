@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 import {
   ActionIcon,
   createStyles,
@@ -13,8 +15,8 @@ import {
   IconPlus,
   IconToolsKitchen
 } from '@tabler/icons'
-import { useEffect, useState } from 'react'
 import { Category, MenuItem } from 'types/graphql'
+
 import CategoryModal from '../Category/CategoryModal'
 import { AdminMenuItem } from '../Menu/AdminMenuItem'
 import MenuItemModal from '../Menu/MenuItemModal'
@@ -25,7 +27,7 @@ interface Props {
 }
 
 const AdminMenuItems = ({ menuItems, categories }: Props) => {
-  const { classes, theme } = useClasses()
+  const { classes } = useClasses()
 
   const [menuItemsDisplay, setMenuItemsDisplay] = useState(menuItems)
   const [filter, setFilter] = useState('')
@@ -38,48 +40,55 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
   }, [menuItems])
 
   useEffect(() => {
-    setMenuItemsDisplay((items) =>
+    setMenuItemsDisplay((_) =>
       menuItems.filter(
         (i) =>
           i.name.toLowerCase().includes(filter.toLowerCase()) ||
           i.category.name.toLowerCase().includes(filter.toLowerCase())
       )
     )
-  }, [filter])
+  }, [filter, menuItems])
 
   return (
     <>
       <Group align={'center'} className={classes.topNav}>
         <Text>ADMINISTRAÇÃO DO MENU</Text>
-        <TextInput
-          placeholder="Filtrar items"
-          icon={<IconFilter />}
+        <Flex
+          align="center"
+          justify="space-between"
+          gap="sm"
           style={{ flex: '1' }}
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-        <Menu shadow="md" width={250}>
-          <Menu.Target>
-            <ActionIcon>
-              <IconPlus stroke={2} />
-            </ActionIcon>
-          </Menu.Target>
+        >
+          <TextInput
+            placeholder="Filtrar items"
+            icon={<IconFilter />}
+            style={{ flex: '1' }}
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <Menu shadow="md" width={250}>
+            <Menu.Target>
+              <ActionIcon>
+                <IconPlus stroke={2} />
+              </ActionIcon>
+            </Menu.Target>
 
-          <Menu.Dropdown>
-            <Menu.Item
-              icon={<IconToolsKitchen size={14} />}
-              onClick={(e) => setModalMenuItemOpen(true)}
-            >
-              Adicionar item ao menu
-            </Menu.Item>
-            <Menu.Item
-              icon={<IconCategory size={14} />}
-              onClick={(e) => setModalCategoriesOpen(true)}
-            >
-              Adicionar Categoria
-            </Menu.Item>
-          </Menu.Dropdown>
-        </Menu>
+            <Menu.Dropdown>
+              <Menu.Item
+                icon={<IconToolsKitchen size={14} />}
+                onClick={() => setModalMenuItemOpen(true)}
+              >
+                Adicionar item ao menu
+              </Menu.Item>
+              <Menu.Item
+                icon={<IconCategory size={14} />}
+                onClick={() => setModalCategoriesOpen(true)}
+              >
+                Adicionar Categoria
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Flex>
       </Group>
 
       <Flex direction="column" className={classes.content}>
@@ -114,9 +123,9 @@ const useClasses = createStyles({
     padding: '1em',
     justifyContent: 'space-between',
     position: 'sticky',
-    top: '4.4em',
+    top: '3em',
     backgroundColor: 'white',
-    zIndex: 100,
+    zIndex: 50,
   },
   content: {},
 })

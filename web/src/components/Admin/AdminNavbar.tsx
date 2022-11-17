@@ -1,4 +1,6 @@
-import { Navbar, NavLink, ScrollArea, useMantineTheme } from '@mantine/core'
+import { useState } from 'react'
+
+import { Navbar, NavLink, ScrollArea } from '@mantine/core'
 import {
   IconChevronRight,
   IconReceipt,
@@ -6,7 +8,6 @@ import {
   IconToolsKitchen,
   IconUsers
 } from '@tabler/icons'
-import { useState } from 'react'
 
 interface Props {
   opened: boolean
@@ -20,14 +21,13 @@ export enum AdminMenus {
 }
 
 const AdminNavbar = ({ opened, setMenuOpened }: Props) => {
-  const theme = useMantineTheme()
   const [menuSelected, setMenuSelected] = useState<AdminMenus>(
     AdminMenus.ORDERS
   )
 
   const openMenu = (selected: AdminMenus) => {
-    setMenuSelected(selected);
-    setMenuOpened(selected);
+    setMenuSelected(selected)
+    setMenuOpened(selected)
   }
 
   return (
@@ -45,7 +45,7 @@ const AdminNavbar = ({ opened, setMenuOpened }: Props) => {
           variant="light"
           color="red"
           active={menuSelected === AdminMenus.ORDERS}
-          onClick={(e) => openMenu(AdminMenus.ORDERS)}
+          onClick={() => openMenu(AdminMenus.ORDERS)}
         />
         <NavLink
           label="Menu"
@@ -54,7 +54,7 @@ const AdminNavbar = ({ opened, setMenuOpened }: Props) => {
           rightSection={<IconChevronRight size={12} stroke={1.5} />}
           color="red"
           active={menuSelected === AdminMenus.MENU}
-          onClick={(e) => openMenu(AdminMenus.MENU)}
+          onClick={() => openMenu(AdminMenus.MENU)}
         />
         <NavLink
           label="Funcionários"
@@ -63,7 +63,7 @@ const AdminNavbar = ({ opened, setMenuOpened }: Props) => {
           rightSection={<IconChevronRight size={12} stroke={1.5} />}
           color="red"
           active={menuSelected === AdminMenus.EMPLOYEES}
-          onClick={(e) => openMenu(AdminMenus.EMPLOYEES)}
+          onClick={() => openMenu(AdminMenus.EMPLOYEES)}
         />
       </Navbar.Section>
 
