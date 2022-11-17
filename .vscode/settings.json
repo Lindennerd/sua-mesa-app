@@ -3,12 +3,14 @@
   "files.trimTrailingWhitespace": true,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
+  "editor.fontFamily": "'Hack', 'Droid Sans Mono', 'monospace', monospace",
+  "eslint.codeActionsOnSave.mode": "problems",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.fixAll": true,
-    "source.organizeImports": true
+    "source.organizeImports": true,
   },
   "[prisma]": {
     "editor.formatOnSave": true
-  }
+  },
 }
