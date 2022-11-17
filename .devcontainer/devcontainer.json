@@ -1,0 +1,31 @@
+{
+	"name": "Node.js",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:16-bullseye",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		8910,
+		8911
+	],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "yarn install",
+	"postStartCommand": "yarn rw dev",
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"ofhumanbondage.react-proptypes-intellisense",
+				"mgmcdermott.vscode-language-babel",
+				"editorconfig.editorconfig",
+				"prisma.prisma",
+				"graphql.vscode-graphql",
+				"esbenp.prettier-vscode",
+				"dracula-theme.theme-dracula"
+			]
+		}
+	}
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}

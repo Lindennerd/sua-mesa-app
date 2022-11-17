@@ -2,8 +2,11 @@ import { useEffect, useRef } from 'react'
 
 import { useAuth } from '@redwoodjs/auth'
 import {
-  EmailField, FieldError, Form,
-  Label, PasswordField,
+  EmailField,
+  FieldError,
+  Form,
+  Label,
+  PasswordField,
   Submit
 } from '@redwoodjs/forms'
 import { Link, navigate, routes } from '@redwoodjs/router'
@@ -30,6 +33,7 @@ const LoginPage = () => {
     if (response.message) {
       toast(response.message)
     } else if (response.error) {
+      console.error(response)
       toast.error(response.error)
     } else {
       toast.success('Welcome back!')

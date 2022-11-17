@@ -1,5 +1,7 @@
-import { AppShell, useMantineTheme } from '@mantine/core'
 import { useState } from 'react'
+
+import { AppShell } from '@mantine/core'
+
 import AdminContent from '../Admin/AdminContent'
 import AdminEmployees from '../Admin/AdminEmployees'
 import AdminHeader from '../Admin/AdminHeader'
@@ -7,14 +9,18 @@ import AdminMenuItems from '../Admin/AdminMenuItems'
 import AdminNavbar, { AdminMenus } from '../Admin/AdminNavbar'
 
 interface RestaurantAdminProps {
-  name: string,
-  menuItems: any[],
-  employees: any[],
+  name: string
+  menuItems: any[]
+  employees: any[]
   categories: any[]
 }
 
-const RestaurantAdmin = ({ name, menuItems, employees, categories }: RestaurantAdminProps) => {
-  const theme = useMantineTheme()
+const RestaurantAdmin = ({
+  name,
+  menuItems,
+  employees,
+  categories,
+}: RestaurantAdminProps) => {
   const [opened, setOpened] = useState(false)
   const [menu, setMenu] = useState<AdminMenus>(AdminMenus.ORDERS)
 
@@ -36,7 +42,9 @@ const RestaurantAdmin = ({ name, menuItems, employees, categories }: RestaurantA
       <AdminContent
         menu={menu}
         employees={<AdminEmployees employees={employees} />}
-        menuItems={<AdminMenuItems menuItems={menuItems} categories={categories} />}
+        menuItems={
+          <AdminMenuItems menuItems={menuItems} categories={categories} />
+        }
       />
     </AppShell>
   )

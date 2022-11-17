@@ -1,12 +1,21 @@
-import { ActionIcon, createStyles, Group, Text, TextInput, Tooltip } from '@mantine/core'
-import { IconFilter, IconPlus } from '@tabler/icons'
 import { useState } from 'react'
+
+import {
+  ActionIcon,
+  createStyles,
+  Group,
+  Text,
+  TextInput,
+  Tooltip
+} from '@mantine/core'
+import { IconFilter, IconPlus } from '@tabler/icons'
 import { RestaurantUser } from 'types/graphql'
+
 import { EmployeeModal } from '../Employee/EmployeeModal'
 
 const AdminEmployees = ({ employees }: { employees: RestaurantUser[] }) => {
-  const { classes, theme } = useClasses()
-  const [registerModal, setRegisterModal] = useState(false);
+  const { classes } = useClasses()
+  const [registerModal, setRegisterModal] = useState(false)
 
   return (
     <>
@@ -26,7 +35,14 @@ const AdminEmployees = ({ employees }: { employees: RestaurantUser[] }) => {
         </Tooltip>
       </Group>
 
-      <EmployeeModal openned={registerModal} onClose={() => setRegisterModal(false)} />
+      <Group>
+        {employees && employees.map((e) => <div key={e.id}>{e.user.name}</div>)}
+      </Group>
+
+      <EmployeeModal
+        openned={registerModal}
+        onClose={() => setRegisterModal(false)}
+      />
     </>
   )
 }

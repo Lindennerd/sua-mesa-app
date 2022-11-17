@@ -1,11 +1,9 @@
-import { Button, TextInput } from '@mantine/core'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
-import { User } from 'types/graphql'
 
-interface Props {
-  onSubmit: (user: User) => void
-}
+import { Button, TextInput } from '@mantine/core'
+import { toast } from 'react-toastify'
+
+import { useAuth } from '@redwoodjs/auth'
 
 type RegisterForm = {
   name: string
@@ -14,15 +12,18 @@ type RegisterForm = {
   passwordConfirmation: string
 }
 
-export const RegisterForm = ({ onSubmit }: Props) => {
+const RegisterForm = () => {
   const [registerForm, setRegisterForm] = useState<RegisterForm>()
+  const { signUp } = useAuth()
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
 
     if (registerForm.password !== registerForm.passwordConfirmation) {
       toast.warn('Confirmação de senha inválida')
     }
+
+    await signUp(registerForm)
   }
 
   return (
@@ -68,7 +69,9 @@ export const RegisterForm = ({ onSubmit }: Props) => {
         type="password"
         required
       />
-      <Button>Registrar</Button>
+      <Button type="submit">Registrar</Button>
     </form>
   )
 }
+
+export default RegisterForm

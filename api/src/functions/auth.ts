@@ -9,7 +9,6 @@ export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context
 ) => {
-
   const forgotPasswordOptions: DbAuthHandlerOptions['forgotPassword'] = {
     // handler() is invoked after verifying that a user was found with the given
     // username. This is where you can send the user an email with a link to
@@ -52,6 +51,7 @@ export const handler = async (
     // didn't validate their email yet), throw an error and it will be returned
     // by the `logIn()` function from `useAuth()` in the form of:
     // `{ message: 'Error message' }`
+    enabled: true,
     handler: (user) => {
       return user
     },
@@ -115,7 +115,7 @@ export const handler = async (
           email: username,
           hashedPassword: hashedPassword,
           salt: salt,
-          name: userAttributes.name
+          name: userAttributes.name,
         },
       })
     },
