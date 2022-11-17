@@ -1,12 +1,19 @@
-import { LoadingOverlay } from "@mantine/core";
-import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web';
-import { useEffect } from "react";
-import { useRestaurantAtom } from "src/atom/restaurant";
-import { QUERY_RESTAURANT_BY_SLUG } from "src/graphql/restaurant";
-import type { FindRestaurantBySlug, FindRestaurantBySlugVariables } from 'types/graphql';
-import RestaurantAdmin from './RestaurantAdmin';
+import { useEffect } from 'react'
 
-export const QUERY = QUERY_RESTAURANT_BY_SLUG;
+import { LoadingOverlay } from '@mantine/core'
+import type {
+  FindRestaurantBySlug,
+  FindRestaurantBySlugVariables
+} from 'types/graphql'
+
+import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web'
+
+import { useRestaurantAtom } from 'src/atom/restaurant'
+import { QUERY_RESTAURANT_BY_SLUG } from 'src/graphql/restaurant'
+
+import RestaurantAdmin from './RestaurantAdmin'
+
+export const QUERY = QUERY_RESTAURANT_BY_SLUG
 
 export const beforeQuery = (props) => {
   return {
@@ -15,9 +22,11 @@ export const beforeQuery = (props) => {
   }
 }
 
-export const Loading = () => <>
-  <LoadingOverlay visible={true} />
-</>
+export const Loading = () => (
+  <>
+    <LoadingOverlay visible={true} />
+  </>
+)
 
 export const Empty = () => <div>Empty</div>
 
@@ -30,19 +39,24 @@ export const Failure = ({
 export const Success = ({
   restaurantBySlug,
 }: CellSuccessProps<FindRestaurantBySlug, FindRestaurantBySlugVariables>) => {
-  const [restaurant, setRestaurant] = useRestaurantAtom();
+  const [_, setRestaurant] = useRestaurantAtom()
   useEffect(() => {
     setRestaurant({
       id: restaurantBySlug.id,
-      slug: restaurantBySlug.slug
+      slug: restaurantBySlug.slug,
     })
-  }, [restaurantBySlug])
+  }, [restaurantBySlug, setRestaurant])
 
-
-  return <RestaurantAdmin
-    menuItems={restaurantBySlug.MenuItem}
-    categories={restaurantBySlug.Category}
-    employees={restaurantBySlug.RestaurantUser.filter(user => user.roles === "EMPLOYEE") ?? []}
-    name={restaurantBySlug.name}
-  />
+  return (
+    <RestaurantAdmin
+      menuItems={restaurantBySlug.MenuItem}
+      categories={restaurantBySlug.Category}
+      employees={
+        restaurantBySlug.RestaurantUser.filter(
+          (user) => user.roles === 'EMPLOYEE'
+        ) ?? []
+      }
+      name={restaurantBySlug.name}
+    />
+  )
 }

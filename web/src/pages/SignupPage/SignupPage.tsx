@@ -15,10 +15,9 @@ import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
 const SignupPage = () => {
-  const { isAuthenticated, currentUser,  signUp } = useAuth()
+  const { isAuthenticated, currentUser, signUp } = useAuth()
 
   useEffect(() => {
-
     if (isAuthenticated) {
       if (!currentUser.RestaurantUser.length) {
         navigate(routes.setup())
@@ -26,7 +25,7 @@ const SignupPage = () => {
         navigate(routes.home())
       }
     }
-  }, [isAuthenticated])
+  }, [currentUser.RestaurantUser.length, isAuthenticated])
 
   // focus on email box on page load
   const usernameRef = useRef<HTMLInputElement>(null)

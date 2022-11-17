@@ -1,9 +1,9 @@
-import { MetaTags } from '@redwoodjs/web';
-import { useState } from 'react';
-import RestaurantCell from "src/components/Restaurant/RestaurantCell";
+import { MetaTags } from '@redwoodjs/web'
+
+//@ts-expect-error redwood cell cant be found
+import RestaurantCell from 'src/components/Restaurant/RestaurantCell'
 
 const AdminPage = ({ slug }: { slug: string }) => {
-    const [opened, setOpened] = useState(false)
   return (
     <>
       <MetaTags title="Admin" description="Admin page" />

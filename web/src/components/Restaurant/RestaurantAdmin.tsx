@@ -34,6 +34,7 @@ const RestaurantAdmin = ({
           opened={opened}
           setMenuOpened={(menu) => {
             setMenu(menu)
+            setOpened(false)
           }}
         />
       }

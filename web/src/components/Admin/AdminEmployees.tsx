@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   ActionIcon,
   createStyles,
+  Flex,
   Group,
   Text,
   TextInput,
@@ -11,11 +12,21 @@ import {
 import { IconFilter, IconPlus } from '@tabler/icons'
 import { RestaurantUser } from 'types/graphql'
 
+import AdminEmployeeView from '../Employee/AdminEmployeeView'
 import { EmployeeModal } from '../Employee/EmployeeModal'
 
 const AdminEmployees = ({ employees }: { employees: RestaurantUser[] }) => {
   const { classes } = useClasses()
+  const [employeesDisplay, setEmployeesDisplay] = useState(employees)
   const [registerModal, setRegisterModal] = useState(false)
+
+  useEffect(() => {
+    setEmployeesDisplay(employees)
+  }, [employees])
+
+  function onSignUp(user: RestaurantUser) {
+    setEmployeesDisplay((employees) => employees.concat(user))
+  }
 
   return (
     <>
@@ -35,12 +46,16 @@ const AdminEmployees = ({ employees }: { employees: RestaurantUser[] }) => {
         </Tooltip>
       </Group>
 
-      <Group>
-        {employees && employees.map((e) => <div key={e.id}>{e.user.name}</div>)}
-      </Group>
+      <Flex direction="column">
+        {employeesDisplay &&
+          employeesDisplay.map((user) => (
+            <AdminEmployeeView key={user.id} restaurantUser={user} />
+          ))}
+      </Flex>
 
       <EmployeeModal
         openned={registerModal}
+        onSignUp={onSignUp}
         onClose={() => setRegisterModal(false)}
       />
     </>
@@ -56,7 +71,7 @@ const useClasses = createStyles({
     position: 'sticky',
     top: '4.4em',
     backgroundColor: 'white',
-    zIndex: 100,
+    zIndex: 50,
   },
   content: {},
 })

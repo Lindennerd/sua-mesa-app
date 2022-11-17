@@ -2,19 +2,27 @@ import { useState } from 'react'
 
 import { Button, TextInput } from '@mantine/core'
 import { toast } from 'react-toastify'
+import { RestaurantUser } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
 
+import { useRestaurantAtom } from 'src/atom/restaurant'
+
 type RegisterForm = {
   name: string
-  email: string
+  username: string
   password: string
   passwordConfirmation: string
 }
 
-const RegisterForm = () => {
-  const [registerForm, setRegisterForm] = useState<RegisterForm>()
+interface Props {
+  onSignUp: (user: RestaurantUser) => void
+}
+
+const RegisterForm = ({ onSignUp }: Props) => {
   const { signUp } = useAuth()
+  const [restaurant] = useRestaurantAtom()
+  const [registerForm, setRegisterForm] = useState<RegisterForm>()
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -23,7 +31,21 @@ const RegisterForm = () => {
       toast.warn('Confirmação de senha inválida')
     }
 
-    await signUp(registerForm)
+    const created = await signUp({
+      ...registerForm,
+      role: 'EMPLOYEE',
+      restaurant: restaurant.id,
+    })
+
+    onSignUp({
+      restaurantId: restaurant.id,
+      //@ts-expect-error optimistic update
+      user: {
+        id: created.id,
+        name: registerForm.name,
+        email: registerForm.username,
+      },
+    })
   }
 
   return (
@@ -35,15 +57,15 @@ const RegisterForm = () => {
         onChange={(e) =>
           setRegisterForm((form) => ({ ...form, name: e.target.value }))
         }
-        value={registerForm?.name}
+        value={registerForm?.name ?? ''}
         label="Nome"
         required
       />
       <TextInput
         onChange={(e) =>
-          setRegisterForm((form) => ({ ...form, email: e.target.value }))
+          setRegisterForm((form) => ({ ...form, username: e.target.value }))
         }
-        value={registerForm?.email}
+        value={registerForm?.username ?? ''}
         label="Email"
         type="email"
         required
@@ -52,7 +74,7 @@ const RegisterForm = () => {
         onChange={(e) =>
           setRegisterForm((form) => ({ ...form, password: e.target.value }))
         }
-        value={registerForm?.password}
+        value={registerForm?.password ?? ''}
         label="Senha"
         type="password"
         required
@@ -64,7 +86,7 @@ const RegisterForm = () => {
             passwordConfirmation: e.target.value,
           }))
         }
-        value={registerForm?.passwordConfirmation}
+        value={registerForm?.passwordConfirmation ?? ''}
         label="Confirmação de Senha"
         type="password"
         required

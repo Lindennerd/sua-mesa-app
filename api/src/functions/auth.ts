@@ -109,7 +109,43 @@ export const handler = async (
     //
     // If this returns anything else, it will be returned by the
     // `signUp()` function in the form of: `{ message: 'String here' }`.
-    handler: ({ username, hashedPassword, salt, userAttributes }) => {
+    handler: async ({ username, hashedPassword, salt, userAttributes }) => {
+      if (userAttributes.role === 'EMPLOYEE' && userAttributes.restaurant) {
+        const user = await db.user.create({
+          data: {
+            email: username,
+            hashedPassword: hashedPassword,
+            salt: salt,
+            name: userAttributes.name,
+            RestaurantUser: {
+              create: {
+                roles: 'EMPLOYEE',
+                restaurantId: parseInt(userAttributes.restaurant),
+              },
+            },
+          },
+        })
+
+        return { id: user.id }
+      }
+
+      if (userAttributes.role === 'CUSTOMER' && userAttributes.restaurant) {
+        return db.user.create({
+          data: {
+            email: username,
+            hashedPassword: hashedPassword,
+            salt: salt,
+            name: userAttributes.name,
+            RestaurantUser: {
+              create: {
+                roles: 'CUSTOMER',
+                restaurantId: parseInt(userAttributes.restaurant),
+              },
+            },
+          },
+        })
+      }
+
       return db.user.create({
         data: {
           email: username,

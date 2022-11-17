@@ -1,12 +1,4 @@
-import { useMutation } from '@redwoodjs/web'
 import { toast } from 'react-toastify'
-import { useRestaurantAtom } from 'src/atom/restaurant'
-import {
-  CREATE_MENUITEM_MUTATION,
-  DELETE_MENUITEM_MUTATION,
-  UPDATE_MENUITEM_MUTATION
-} from 'src/graphql/menuItem'
-import { QUERY_RESTAURANT_BY_SLUG } from 'src/graphql/restaurant'
 import {
   CreateMenuItem,
   DeleteMenuItem,
@@ -14,12 +6,22 @@ import {
   UpdateMenuItem
 } from 'types/graphql'
 
+import { useMutation } from '@redwoodjs/web'
+
+import { useRestaurantAtom } from 'src/atom/restaurant'
+import {
+  CREATE_MENUITEM_MUTATION,
+  DELETE_MENUITEM_MUTATION,
+  UPDATE_MENUITEM_MUTATION
+} from 'src/graphql/menuItem'
+import { QUERY_RESTAURANT_BY_SLUG } from 'src/graphql/restaurant'
+
 export const useMenuItemMutation = () => {
   const [restaurant] = useRestaurantAtom()
 
   return {
     create({ onCompleted }: { onCompleted?: () => void }) {
-      const [createMenuItem, { loading, error }] = useMutation<CreateMenuItem>(
+      const [createMenuItem, { loading }] = useMutation<CreateMenuItem>(
         CREATE_MENUITEM_MUTATION,
         {
           onCompleted() {
@@ -55,10 +57,10 @@ export const useMenuItemMutation = () => {
     },
 
     update({ onCompleted }: { onCompleted: () => void }) {
-      const [updateMenuItem, { loading, error }] = useMutation<UpdateMenuItem>(
+      const [updateMenuItem, { loading }] = useMutation<UpdateMenuItem>(
         UPDATE_MENUITEM_MUTATION,
         {
-          onCompleted(data) {
+          onCompleted() {
             onCompleted()
           },
           onError(error) {
@@ -93,10 +95,10 @@ export const useMenuItemMutation = () => {
     },
 
     remove({ onCompleted }: { onCompleted: () => void }) {
-      const [deleteMenuItem, { loading, error }] = useMutation<DeleteMenuItem>(
+      const [deleteMenuItem, { loading }] = useMutation<DeleteMenuItem>(
         DELETE_MENUITEM_MUTATION,
         {
-          onCompleted(data) {
+          onCompleted() {
             onCompleted()
           },
           onError(error) {
@@ -126,7 +128,7 @@ export const useMenuItemMutation = () => {
         }
       )
 
-      return { deleteMenuItem, loading };
+      return { deleteMenuItem, loading }
     },
   }
 }
