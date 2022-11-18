@@ -19,10 +19,21 @@ const AdminEmployees = ({ employees }: { employees: RestaurantUser[] }) => {
   const { classes } = useClasses()
   const [employeesDisplay, setEmployeesDisplay] = useState(employees)
   const [registerModal, setRegisterModal] = useState(false)
+  const [filter, setFilter] = useState('')
 
   useEffect(() => {
     setEmployeesDisplay(employees)
   }, [employees])
+
+  useEffect(() => {
+    setEmployeesDisplay((_) =>
+      employees.filter((employee) =>
+        employee.user.name
+          .toLocaleLowerCase()
+          .includes(filter.toLocaleLowerCase())
+      )
+    )
+  }, [filter, employees])
 
   function onSignUp(user: RestaurantUser) {
     setEmployeesDisplay((employees) => employees.concat(user))
@@ -36,8 +47,8 @@ const AdminEmployees = ({ employees }: { employees: RestaurantUser[] }) => {
           placeholder="Filtrar funcionários"
           icon={<IconFilter />}
           style={{ flex: '1' }}
-          // value={filter}
-          // onChange={(e) => setFilter(e.target.value)}
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
         />
         <Tooltip label="Adicionar Funcionário">
           <ActionIcon onClick={() => setRegisterModal(true)}>
@@ -46,7 +57,7 @@ const AdminEmployees = ({ employees }: { employees: RestaurantUser[] }) => {
         </Tooltip>
       </Group>
 
-      <Flex direction="column">
+      <Flex direction="column" mt="sm">
         {employeesDisplay &&
           employeesDisplay.map((user, index) => (
             <AdminEmployeeView key={index} restaurantUser={user} />
