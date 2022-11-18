@@ -7,6 +7,7 @@ import { Category, MenuItem } from 'types/graphql'
 import CategoryModal from '../Category/CategoryModal'
 import { AdminMenuItem } from '../Menu/AdminMenuItem'
 import MenuItemModal from '../Menu/MenuItemModal'
+
 import AdminTopNav from './AdminTopNav'
 
 interface Props {
