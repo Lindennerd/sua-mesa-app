@@ -1,25 +1,13 @@
 import { useEffect, useState } from 'react'
 
-import {
-  ActionIcon,
-  createStyles,
-  Flex,
-  Group,
-  Menu,
-  Text,
-  TextInput
-} from '@mantine/core'
-import {
-  IconCategory,
-  IconFilter,
-  IconPlus,
-  IconToolsKitchen
-} from '@tabler/icons'
+import { ActionIcon, Flex, Menu } from '@mantine/core'
+import { IconCategory, IconPlus, IconToolsKitchen } from '@tabler/icons'
 import { Category, MenuItem } from 'types/graphql'
 
 import CategoryModal from '../Category/CategoryModal'
 import { AdminMenuItem } from '../Menu/AdminMenuItem'
 import MenuItemModal from '../Menu/MenuItemModal'
+import AdminTopNav from './AdminTopNav'
 
 interface Props {
   menuItems: MenuItem[]
@@ -27,8 +15,6 @@ interface Props {
 }
 
 const AdminMenuItems = ({ menuItems, categories }: Props) => {
-  const { classes } = useClasses()
-
   const [menuItemsDisplay, setMenuItemsDisplay] = useState(menuItems)
   const [filter, setFilter] = useState('')
 
@@ -51,21 +37,11 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
 
   return (
     <>
-      <Group align={'center'} className={classes.topNav}>
-        <Text>ADMINISTRAÇÃO DO MENU</Text>
-        <Flex
-          align="center"
-          justify="space-between"
-          gap="sm"
-          style={{ flex: '1' }}
-        >
-          <TextInput
-            placeholder="Filtrar items"
-            icon={<IconFilter />}
-            style={{ flex: '1' }}
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-          />
+      <AdminTopNav
+        filter={filter}
+        onFilter={(filter) => setFilter(filter)}
+        title="administração do menu"
+        navMenu={
           <Menu shadow="md" width={250}>
             <Menu.Target>
               <ActionIcon>
@@ -88,10 +64,10 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
               </Menu.Item>
             </Menu.Dropdown>
           </Menu>
-        </Flex>
-      </Group>
+        }
+      ></AdminTopNav>
 
-      <Flex direction="column" className={classes.content}>
+      <Flex direction="column">
         {menuItemsDisplay &&
           menuItemsDisplay.map((item, index) => (
             <AdminMenuItem
@@ -115,19 +91,5 @@ const AdminMenuItems = ({ menuItems, categories }: Props) => {
     </>
   )
 }
-
-const useClasses = createStyles({
-  topNav: {
-    borderBottom: '.5px solid #eee',
-    width: '100%',
-    padding: '1em',
-    justifyContent: 'space-between',
-    position: 'sticky',
-    top: '3em',
-    backgroundColor: 'white',
-    zIndex: 50,
-  },
-  content: {},
-})
 
 export default AdminMenuItems
