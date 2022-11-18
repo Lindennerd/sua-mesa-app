@@ -5,8 +5,9 @@ import {
   IconChevronRight,
   IconReceipt,
   IconSettings,
+  IconTable,
   IconToolsKitchen,
-  IconUsers
+  IconUsers,
 } from '@tabler/icons'
 
 interface Props {
@@ -18,6 +19,7 @@ export enum AdminMenus {
   ORDERS,
   MENU,
   EMPLOYEES,
+  TABLES,
 }
 
 const AdminNavbar = ({ opened, setMenuOpened }: Props) => {
@@ -64,6 +66,15 @@ const AdminNavbar = ({ opened, setMenuOpened }: Props) => {
           color="red"
           active={menuSelected === AdminMenus.EMPLOYEES}
           onClick={() => openMenu(AdminMenus.EMPLOYEES)}
+        />
+        <NavLink
+          label="Mesas"
+          icon={<IconTable size={20} stroke={1.5} />}
+          variant="light"
+          rightSection={<IconChevronRight size={12} stroke={1.5} />}
+          color="red"
+          active={menuSelected === AdminMenus.TABLES}
+          onClick={() => openMenu(AdminMenus.TABLES)}
         />
       </Navbar.Section>
 

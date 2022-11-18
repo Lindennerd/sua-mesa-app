@@ -7,12 +7,14 @@ import AdminEmployees from '../Admin/AdminEmployees'
 import AdminHeader from '../Admin/AdminHeader'
 import AdminMenuItems from '../Admin/AdminMenuItems'
 import AdminNavbar, { AdminMenus } from '../Admin/AdminNavbar'
+import AdminTables from '../Admin/AdminTables'
 
 interface RestaurantAdminProps {
   name: string
   menuItems: any[]
   employees: any[]
   categories: any[]
+  tables: any[]
 }
 
 const RestaurantAdmin = ({
@@ -20,6 +22,7 @@ const RestaurantAdmin = ({
   menuItems,
   employees,
   categories,
+  tables,
 }: RestaurantAdminProps) => {
   const [opened, setOpened] = useState(false)
   const [menu, setMenu] = useState<AdminMenus>(AdminMenus.ORDERS)
@@ -43,6 +46,7 @@ const RestaurantAdmin = ({
       <AdminContent
         menu={menu}
         employees={<AdminEmployees employees={employees} />}
+        tables={<AdminTables tables={tables} />}
         menuItems={
           <AdminMenuItems menuItems={menuItems} categories={categories} />
         }

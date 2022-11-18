@@ -51,6 +51,7 @@ export const Success = ({
     <RestaurantAdmin
       menuItems={restaurantBySlug.MenuItem}
       categories={restaurantBySlug.Category}
+      tables={restaurantBySlug.Table}
       employees={
         restaurantBySlug.RestaurantUser.filter(
           (user) => user.roles === 'EMPLOYEE'

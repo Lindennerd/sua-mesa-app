@@ -35,6 +35,10 @@ export const QUERY_RESTAURANT_BY_SLUG = gql`
         id
         name
       }
+      Table {
+        id
+        name
+      }
     }
   }
 `
