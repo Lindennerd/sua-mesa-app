@@ -1,11 +1,6 @@
 // In this file, all Page components from 'src/pages` are auto-imported. Nested
-// directories are supported, and should be uppercase. Each subdirectory will be
-// prepended onto the component name.
-//
-// Examples:
-//
-// 'src/pages/HomePage/HomePage.js'         -> HomePage
-// 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
+
+import { LoadingOverlay } from '@mantine/core'
 
 import { Route, Router, Set } from '@redwoodjs/router'
 
@@ -15,12 +10,14 @@ import LandingPageLayout from './layouts/LandingPageLayout/LandingPageLayout'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/pedidos/{slug:String}" page={OrdersPage} name="orders" />
+      <Route path="/pedidos/{slug:String}/table/{id:int}" page={OrdersPage} name="orders" />
       <Set wrap={LandingPageLayout}>
         <Route path="/" page={HomePage} name="home" prerender />
       </Set>
-      <Set private unauthenticated="home">
-        <Set wrap={AdminPageLayout}>
-          <Route path="/admin/{slug:String}" page={AdminPage} name="admin" />
+      <Set private unauthenticated="home" whileLoadingAuth={() => <LoadingOverlay visible={true} />}>
+        <Set wrap={AdminPageLayout} whileLoadingAuth={() => <LoadingOverlay visible={true} />}>
+          <Route path="/admin/{slug:String}" page={AdminPage} name="admin" whileLoadingPage={() => <LoadingOverlay visible={true} />} />
         </Set>
         <Route path="/setup" page={SetupPage} name="setup" />
       </Set>

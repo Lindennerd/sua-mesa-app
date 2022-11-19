@@ -6,6 +6,7 @@ import type {
   FindRestaurantBySlugVariables
 } from 'types/graphql'
 
+import { useLocation } from '@redwoodjs/router'
 import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web'
 
 import { useRestaurantAtom } from 'src/atom/restaurant'
@@ -46,6 +47,10 @@ export const Success = ({
       slug: restaurantBySlug.slug,
     })
   }, [restaurantBySlug, setRestaurant])
+
+  const { pathname } = useLocation()
+
+  if (pathname.includes('pedidos')) return <div>Pedidos</div>
 
   return (
     <RestaurantAdmin

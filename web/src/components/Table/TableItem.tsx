@@ -35,7 +35,7 @@ const TableItem = ({ table }: { table: Table }) => {
   })
 
   useEffect(() => {
-    const url = `${location.origin}/pedidos/${restaurant.slug}/${table.id}`
+    const url = `${location.origin}/pedidos/${restaurant.slug}/table/${table.id}`
     QrCode.toDataURL(url).then((image) => setTableQrCode(image))
   }, [])
 
