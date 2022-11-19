@@ -13,6 +13,7 @@ import { useRestaurantAtom } from 'src/atom/restaurant'
 import { QUERY_RESTAURANT_BY_SLUG } from 'src/graphql/restaurant'
 
 import RestaurantAdmin from './RestaurantAdmin'
+import RestaurantOrders from './RestaurantOrders'
 
 export const QUERY = QUERY_RESTAURANT_BY_SLUG
 
@@ -50,7 +51,13 @@ export const Success = ({
 
   const { pathname } = useLocation()
 
-  if (pathname.includes('pedidos')) return <div>Pedidos</div>
+  if (pathname.includes('pedidos'))
+    return (
+      <RestaurantOrders
+        menuItems={restaurantBySlug.MenuItem}
+        categories={restaurantBySlug.Category}
+      />
+    )
 
   return (
     <RestaurantAdmin
