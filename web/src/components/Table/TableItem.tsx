@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import {
   ActionIcon,
   Button,
+  createStyles,
   Flex,
   Group,
   LoadingOverlay,
@@ -13,15 +14,19 @@ import {
 } from '@mantine/core'
 import { IconDotsVertical, IconPrinter, IconTrash } from '@tabler/icons'
 import QrCode from 'qrcode'
+import { useReactToPrint } from 'react-to-print'
 import { Table } from 'types/graphql'
 
 import { useRestaurantAtom } from 'src/atom/restaurant'
 import useTableMutation from 'src/hooks/useTableMutation'
 
 const TableItem = ({ table }: { table: Table }) => {
+  const { classes } = useStyles()
+
   const [restaurant] = useRestaurantAtom()
   const [tableQrCode, setTableQrCode] = useState('')
   const [modalDeleteTableOpen, setModalDeleteTableOpen] = useState(false)
+  const qrCodeRef = useRef(null)
 
   const { remove } = useTableMutation()
 
@@ -42,6 +47,10 @@ const TableItem = ({ table }: { table: Table }) => {
     })
   }
 
+  const print = useReactToPrint({
+    content: () => qrCodeRef.current,
+  })
+
   return (
     <>
       <Flex
@@ -49,8 +58,8 @@ const TableItem = ({ table }: { table: Table }) => {
         p="sm"
         style={{ borderBottom: '1px solid #eee' }}
       >
-        <Group>
-          <img src={tableQrCode} alt="" />
+        <Group ref={qrCodeRef} className={classes.qrCode}>
+          <img src={tableQrCode} alt="QrCode" />
           <Title>{table.name}</Title>
         </Group>
         <Menu transition="slide-down" transitionDuration={150}>
@@ -60,10 +69,7 @@ const TableItem = ({ table }: { table: Table }) => {
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item
-              // onClick={() => setModalMenuItemOpen(true)}
-              icon={<IconPrinter size={14} />}
-            >
+            <Menu.Item onClick={() => print()} icon={<IconPrinter size={14} />}>
               Imprimir
             </Menu.Item>
             <Menu.Item
@@ -99,5 +105,13 @@ const TableItem = ({ table }: { table: Table }) => {
     </>
   )
 }
+
+const useStyles = createStyles({
+  qrCode: {
+    '@media print': {
+      width: '100%',
+    },
+  },
+})
 
 export default TableItem

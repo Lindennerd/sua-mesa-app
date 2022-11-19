@@ -20433,6 +20433,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-to-print@npm:^2.14.10":
+  version: 2.14.10
+  resolution: "react-to-print@npm:2.14.10"
+  dependencies:
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: 7f1b0aa8823c930f60c8df1dea9bddc6abc48a2d2a8708c9e472f00a373fd844da5f84769b2112a7ce74cf35db621d4aca7b6c24847e45a14f3d5f16d56f7268
+  languageName: node
+  linkType: hard
+
 "react-toastify@npm:^9.1.1":
   version: 9.1.1
   resolution: "react-toastify@npm:9.1.1"
@@ -24184,6 +24196,7 @@ __metadata:
     react: 17.0.2
     react-dom: 17.0.2
     react-input-mask: ^2.0.4
+    react-to-print: ^2.14.10
     react-toastify: ^9.1.1
     supabase: ^1.13.0
   languageName: unknown

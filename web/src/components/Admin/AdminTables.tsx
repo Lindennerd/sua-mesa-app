@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { ActionIcon, Button, Flex, Tooltip } from '@mantine/core'
 import { IconPlus } from '@tabler/icons'
+import { useReactToPrint } from 'react-to-print'
 import { Table } from 'types/graphql'
 
 import TableItem from '../Table/TableItem'
@@ -18,6 +19,8 @@ const AdminTables = ({ tables }: Props) => {
   const [filter, setFilter] = useState('')
   const [tableModal, setTableModal] = useState(false)
 
+  const qrCodeRefs = useRef(null)
+
   useEffect(() => {
     setTablesDisplay(tables)
   }, [tables])
@@ -28,6 +31,10 @@ const AdminTables = ({ tables }: Props) => {
     })
   }, [filter, tables])
 
+  const print = useReactToPrint({
+    content: () => qrCodeRefs.current,
+  })
+
   return (
     <>
       <AdminTopNav
@@ -35,7 +42,7 @@ const AdminTables = ({ tables }: Props) => {
         filter={filter}
         onFilter={(filter) => setFilter(filter)}
         navMenu={
-          <Tooltip label="Adicionar Funcionário" position="bottom">
+          <Tooltip label="Adicionar Mesa" position="bottom">
             <ActionIcon onClick={() => setTableModal(true)}>
               <IconPlus stroke={2} />
             </ActionIcon>
@@ -45,16 +52,17 @@ const AdminTables = ({ tables }: Props) => {
 
       <Flex direction="column">
         <Flex p="md">
-          <Button color="red" variant="light">
+          <Button color="red" variant="light" onClick={() => print()}>
             Imprimir todos QRCode
           </Button>
         </Flex>
-        {tablesDisplay &&
-          tablesDisplay.map((table) => (
-            <TableItem key={table.id} table={table} />
-          ))}
+        <div ref={qrCodeRefs}>
+          {tablesDisplay &&
+            tablesDisplay.map((table) => (
+              <TableItem key={table.id} table={table} />
+            ))}
+        </div>
       </Flex>
-
       <TableModal openned={tableModal} onClose={() => setTableModal(false)} />
     </>
   )

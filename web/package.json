@@ -25,6 +25,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-input-mask": "^2.0.4",
+    "react-to-print": "^2.14.10",
     "react-toastify": "^9.1.1",
     "supabase": "^1.13.0"
   },

@@ -54,6 +54,8 @@ export default function useTableMutation() {
           console.error(error)
         },
         update(cache, { data: deletedTable }) {
+          console.log('deletedTable', deletedTable)
+
           const data = cache.readQuery<FindRestaurantBySlug>({
             query: QUERY_RESTAURANT_BY_SLUG,
             variables: {
