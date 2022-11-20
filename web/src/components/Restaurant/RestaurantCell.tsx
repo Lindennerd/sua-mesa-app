@@ -2,8 +2,10 @@ import { useEffect } from 'react'
 
 import { LoadingOverlay } from '@mantine/core'
 import type {
+  Category,
   FindRestaurantBySlug,
-  FindRestaurantBySlugVariables
+  FindRestaurantBySlugVariables,
+  MenuItem
 } from 'types/graphql'
 
 import { useLocation } from '@redwoodjs/router'
@@ -54,8 +56,9 @@ export const Success = ({
   if (pathname.includes('pedidos'))
     return (
       <RestaurantOrders
-        menuItems={restaurantBySlug.MenuItem}
-        categories={restaurantBySlug.Category}
+        name={restaurantBySlug.name}
+        menuItems={restaurantBySlug.MenuItem as MenuItem[]}
+        categories={restaurantBySlug.Category as Category[]}
       />
     )
 
