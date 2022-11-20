@@ -102,6 +102,7 @@ model OrderItem {
   menuItemId Int
   orderId    Int
   status     OrderItemStatus
+  quantity   Int
 }
 
 enum OrderItemStatus {

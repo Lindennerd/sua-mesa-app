@@ -11,7 +11,8 @@ import {
   NavLink,
   ScrollArea,
   Tabs,
-  Text, UnstyledButton
+  Text,
+  UnstyledButton
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import {
@@ -30,6 +31,9 @@ const useStyles = createStyles((theme) => ({
     borderBottom: `1px solid ${
       theme.colorScheme === 'dark' ? 'transparent' : theme.colors.gray[2]
     }`,
+    position: 'sticky',
+    top: 0,
+    zIndex: 50,
   },
 
   mainSection: {
@@ -52,6 +56,8 @@ const useStyles = createStyles((theme) => ({
   },
 
   navbar: {
+    position: 'fixed',
+    top: '6em',
     [theme.fn.largerThan('xs')]: {
       display: 'none',
     },

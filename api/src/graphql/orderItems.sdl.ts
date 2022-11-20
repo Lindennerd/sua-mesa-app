@@ -20,6 +20,9 @@ export const schema = gql`
 
     "Description for status."
     status: OrderItemStatus!
+
+    "Description for quantity"
+    quantity: Int!
   }
 
   """

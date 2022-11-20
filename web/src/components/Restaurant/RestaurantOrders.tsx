@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react'
 
-import { Container, TextInput } from '@mantine/core'
+import {
+  Button,
+  Container,
+  createStyles,
+  Group,
+  Text,
+  TextInput,
+  UnstyledButton
+} from '@mantine/core'
 import { IconSearch } from '@tabler/icons'
-import { Category, MenuItem } from 'types/graphql'
+import { Category, MenuItem, OrderItem } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
 
-import OrderMenuItems from '../Menu/OrderMenuItems'
+import OrderMenuItems from '../Order/OrderMenuItems'
 import { OrdersPageHeader } from '../Order/OrdersPageHeader'
 
 interface Props {
@@ -16,9 +24,12 @@ interface Props {
 }
 
 const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
+  const { theme } = useStyles()
   const { currentUser } = useAuth()
   const [menuItemsDisplay, setMenuItemsDisplay] = useState<MenuItem[]>()
   const [search, setSearch] = useState('')
+  const [order, setOrder] = useState<OrderItem[]>([] as OrderItem[])
+  const [total, setTotal] = useState(0.0)
 
   useEffect(() => {
     setMenuItemsDisplay(
@@ -29,6 +40,12 @@ const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
   useEffect(() => {
     setMenuItemsDisplay(menuItems.filter((menu) => menu.name.includes(search)))
   }, [menuItems, search])
+
+  useEffect(() => {
+    setTotal(
+      order.reduce((prev, curr) => prev + curr.item.price * curr.quantity, 0)
+    )
+  }, [order])
 
   function onSelectcategory(category: number) {
     setMenuItemsDisplay((_) =>
@@ -47,7 +64,15 @@ const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
         name={name}
         onSelectcategory={onSelectcategory}
       />
-      <Container mt="md">
+      <Container
+        pt="md"
+        style={{
+          backgroundColor: 'white',
+          position: 'sticky',
+          top: '6.4rem',
+          zIndex: 25,
+        }}
+      >
         <TextInput
           placeholder="Pesquisar"
           icon={<IconSearch />}
@@ -56,9 +81,31 @@ const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
         />
       </Container>
 
-      <OrderMenuItems menuItems={menuItemsDisplay} />
+      <OrderMenuItems onOrderItem={setOrder} menuItems={menuItemsDisplay} />
+
+      <Group
+        position="apart"
+        p="md"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          color: 'white',
+          backgroundColor: theme.colors.red[7],
+          width: '100%',
+          borderTopRightRadius: '0.5em',
+          borderTopLeftRadius: '0.5em',
+          flexWrap: 'nowrap',
+        }}
+      >
+        <UnstyledButton>
+          <Text>R$ {total.toPrecision(3)}</Text>
+        </UnstyledButton>
+        <Button color="green">Concluir Pedido</Button>
+      </Group>
     </>
   )
 }
+
+const useStyles = createStyles({})
 
 export default RestaurantOrders
