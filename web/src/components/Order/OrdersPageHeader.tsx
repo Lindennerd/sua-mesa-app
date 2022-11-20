@@ -11,8 +11,7 @@ import {
   NavLink,
   ScrollArea,
   Tabs,
-  Text,
-  UnstyledButton
+  Text, UnstyledButton
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import {
@@ -96,18 +95,31 @@ const useStyles = createStyles((theme) => ({
 
 interface HeaderTabsProps {
   user: { name: string; image: string }
-  tabs: string[]
+  tabs: {
+    label: string
+    id: number
+  }[]
   name: string
+  onSelectcategory: (category: number) => void
 }
 
-export function OrdersPageHeader({ user, tabs, name }: HeaderTabsProps) {
+export function OrdersPageHeader({
+  user,
+  tabs,
+  name,
+  onSelectcategory,
+}: HeaderTabsProps) {
   const { classes, cx } = useStyles()
   const [opened, { toggle }] = useDisclosure(false)
   const [userMenuOpened, setUserMenuOpened] = useState(false)
 
   const items = tabs.map((tab) => (
-    <Tabs.Tab value={tab} key={tab}>
-      {tab}
+    <Tabs.Tab
+      value={tab.label}
+      key={tab.id}
+      onClick={() => onSelectcategory(tab.id)}
+    >
+      {tab.label}
     </Tabs.Tab>
   ))
 
@@ -119,7 +131,6 @@ export function OrdersPageHeader({ user, tabs, name }: HeaderTabsProps) {
             <Text size="lg" weight="bolder">
               {name?.toUpperCase()}
             </Text>
-
             <Burger
               opened={opened}
               onClick={toggle}
@@ -173,7 +184,7 @@ export function OrdersPageHeader({ user, tabs, name }: HeaderTabsProps) {
         </Container>
         <Container>
           <Tabs
-            defaultValue={tabs[0]}
+            defaultValue={tabs[0].label}
             variant="outline"
             classNames={{
               tabsList: classes.tabsList,
