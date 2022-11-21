@@ -7,11 +7,14 @@ import { useRestaurantAtom } from 'src/atom/restaurant'
 import { QUERY_RESTAURANT_BY_SLUG } from 'src/graphql/restaurant'
 import { CREATE_TABLE_MUTATION, DELETE_TABLE_MUTATION } from 'src/graphql/table'
 
+import { MutationParams } from './mutation'
+import { readRestaurantQuery } from './utils'
+
 export default function useTableMutation() {
   const [restaurant] = useRestaurantAtom()
 
   return {
-    create({ onCompleted }: { onCompleted: () => void }) {
+    create({ onCompleted }: MutationParams) {
       const [createTable, { loading }] = useMutation(CREATE_TABLE_MUTATION, {
         onCompleted() {
           onCompleted()
@@ -21,12 +24,7 @@ export default function useTableMutation() {
           console.error(error)
         },
         update(cache, { data: createdTable }) {
-          const data = cache.readQuery<FindRestaurantBySlug>({
-            query: QUERY_RESTAURANT_BY_SLUG,
-            variables: {
-              slug: restaurant.slug,
-            },
-          })
+          const data = readRestaurantQuery(cache, restaurant)
           cache.writeQuery({
             query: QUERY_RESTAURANT_BY_SLUG,
             data: {
@@ -44,7 +42,7 @@ export default function useTableMutation() {
       return { createTable, loading }
     },
 
-    remove({ onCompleted }: { onCompleted: () => void }) {
+    remove({ onCompleted }: MutationParams) {
       const [deleteMutation, { loading }] = useMutation(DELETE_TABLE_MUTATION, {
         onCompleted() {
           onCompleted()

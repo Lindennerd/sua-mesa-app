@@ -1,10 +1,5 @@
 import { toast } from 'react-toastify'
-import {
-  CreateMenuItem,
-  DeleteMenuItem,
-  FindRestaurantBySlug,
-  UpdateMenuItem
-} from 'types/graphql'
+import { CreateMenuItem, DeleteMenuItem, UpdateMenuItem } from 'types/graphql'
 
 import { useMutation } from '@redwoodjs/web'
 
@@ -16,11 +11,14 @@ import {
 } from 'src/graphql/menuItem'
 import { QUERY_RESTAURANT_BY_SLUG } from 'src/graphql/restaurant'
 
+import { MutationParams } from './mutation'
+import { readRestaurantQuery } from './utils'
+
 export const useMenuItemMutation = () => {
   const [restaurant] = useRestaurantAtom()
 
   return {
-    create({ onCompleted }: { onCompleted?: () => void }) {
+    create({ onCompleted }: MutationParams) {
       const [createMenuItem, { loading }] = useMutation<CreateMenuItem>(
         CREATE_MENUITEM_MUTATION,
         {
@@ -32,12 +30,7 @@ export const useMenuItemMutation = () => {
             console.error(error)
           },
           update(cache, { data: createMenuItem }) {
-            const data = cache.readQuery<FindRestaurantBySlug>({
-              query: QUERY_RESTAURANT_BY_SLUG,
-              variables: {
-                slug: restaurant.slug,
-              },
-            })
+            const data = readRestaurantQuery(cache, restaurant)
             cache.writeQuery({
               query: QUERY_RESTAURANT_BY_SLUG,
               data: {
@@ -56,7 +49,7 @@ export const useMenuItemMutation = () => {
       return { createMenuItem, loading }
     },
 
-    update({ onCompleted }: { onCompleted: () => void }) {
+    update({ onCompleted }: MutationParams) {
       const [updateMenuItem, { loading }] = useMutation<UpdateMenuItem>(
         UPDATE_MENUITEM_MUTATION,
         {
@@ -68,12 +61,7 @@ export const useMenuItemMutation = () => {
             console.error(error)
           },
           update(cache, { data: updateMenuItem }) {
-            const data = cache.readQuery<FindRestaurantBySlug>({
-              query: QUERY_RESTAURANT_BY_SLUG,
-              variables: {
-                slug: restaurant.slug,
-              },
-            })
+            const data = readRestaurantQuery(cache, restaurant)
             cache.writeQuery({
               query: QUERY_RESTAURANT_BY_SLUG,
               data: {
@@ -94,7 +82,7 @@ export const useMenuItemMutation = () => {
       return { updateMenuItem, loading }
     },
 
-    remove({ onCompleted }: { onCompleted: () => void }) {
+    remove({ onCompleted }: MutationParams) {
       const [deleteMenuItem, { loading }] = useMutation<DeleteMenuItem>(
         DELETE_MENUITEM_MUTATION,
         {
@@ -106,12 +94,7 @@ export const useMenuItemMutation = () => {
             console.error(error)
           },
           update(cache, { data: deleteMenuItem }) {
-            const data = cache.readQuery<FindRestaurantBySlug>({
-              query: QUERY_RESTAURANT_BY_SLUG,
-              variables: {
-                slug: restaurant.slug,
-              },
-            })
+            const data = readRestaurantQuery(cache, restaurant)
             cache.writeQuery({
               query: QUERY_RESTAURANT_BY_SLUG,
               data: {

@@ -1,7 +1,7 @@
 import type {
-  QueryResolvers,
   MutationResolvers,
   OrderRelationResolvers,
+  QueryResolvers
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
@@ -18,7 +18,19 @@ export const order: QueryResolvers['order'] = ({ id }) => {
 
 export const createOrder: MutationResolvers['createOrder'] = ({ input }) => {
   return db.order.create({
-    data: input,
+    data: {
+      status: input.status,
+      userId: context.currentUser.id,
+      payed: false,
+      tableId: input.tableId,
+      restaurantId: input.restaurantId,
+      orderItems: {
+        createMany: {
+          skipDuplicates: true,
+          data: input.orderItems,
+        },
+      },
+    },
   })
 }
 

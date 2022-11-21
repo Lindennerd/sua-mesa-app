@@ -72,7 +72,7 @@ const OrderMenuItems = ({ menuItems, onOrderItem }: Props) => {
                 <Image src={m.image} width="auto" height={100} alt={m.name} />
                 <Flex direction="column">
                   <Text weight="bolder">
-                    {m.name} <Badge color="green">R$ {m.price}</Badge>
+                    {m.name} <Badge color="green">R$ {m.price.toPrecision(2)}</Badge>
                   </Text>
                   <Text>{m.description}</Text>
                 </Flex>

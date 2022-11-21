@@ -53,11 +53,11 @@ export const schema = gql`
     "Description for menuItemId."
     menuItemId: Int!
 
-    "Description for orderId."
-    orderId: Int!
-
     "Description for status."
     status: OrderItemStatus!
+
+    "Description for quantity"
+    quantity: Int!
   }
 
   """

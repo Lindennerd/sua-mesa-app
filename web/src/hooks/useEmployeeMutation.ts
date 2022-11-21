@@ -1,5 +1,4 @@
 import { toast } from 'react-toastify'
-import { FindRestaurantBySlug } from 'types/graphql'
 
 import { useMutation } from '@redwoodjs/web'
 
@@ -7,15 +6,14 @@ import { useRestaurantAtom } from 'src/atom/restaurant'
 import { DELETE_EMPLOYEE_MUTATION } from 'src/graphql/employee'
 import { QUERY_RESTAURANT_BY_SLUG } from 'src/graphql/restaurant'
 
-interface MutationParameters {
-  onCompleted: () => void
-}
+import { MutationParams } from './mutation'
+import { readRestaurantQuery } from './utils'
 
 export const useEmployeeMutation = () => {
   const [restaurant] = useRestaurantAtom()
 
   return {
-    remove({ onCompleted }: MutationParameters) {
+    remove({ onCompleted }: MutationParams) {
       const [deleteEmployee, { loading }] = useMutation(
         DELETE_EMPLOYEE_MUTATION,
         {
@@ -26,12 +24,7 @@ export const useEmployeeMutation = () => {
             toast.error(error)
           },
           update(cache, { data: deleteEmployee }) {
-            const data = cache.readQuery<FindRestaurantBySlug>({
-              query: QUERY_RESTAURANT_BY_SLUG,
-              variables: {
-                slug: restaurant.slug,
-              },
-            })
+            const data = readRestaurantQuery(cache, restaurant)
             cache.writeQuery({
               query: QUERY_RESTAURANT_BY_SLUG,
               data: {
