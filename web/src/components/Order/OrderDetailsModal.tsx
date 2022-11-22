@@ -1,14 +1,20 @@
+import { useState } from 'react'
+
 import { Button, Flex, Modal, Select, Text } from '@mantine/core'
+import { toast } from 'react-toastify'
 import {
   CreateOrderInput,
   CreateOrderItemInput,
-  OrderItem
+  OrderItem,
+  Table
 } from 'types/graphql'
 
 import { useRestaurantAtom } from 'src/atom/restaurant'
+import { useTableAtom } from 'src/atom/table'
 
 interface Props {
   opened: boolean
+  tables: Table[]
   orderItems: OrderItem[]
   onClose: () => void
   onDoneOrder: (order: CreateOrderInput) => void
@@ -17,16 +23,24 @@ interface Props {
 const OrderDetailsModal = ({
   opened,
   orderItems,
+  tables,
   onClose,
   onDoneOrder,
 }: Props) => {
   const [restaurant] = useRestaurantAtom()
+  const [table] = useTableAtom()
+  const [chosenTable, setChosenTable] = useState(table?.toString())
 
   function handleDoneOrder() {
+    if (parseInt(chosenTable) === 0) {
+      toast.warn('Por Favor, escolha uma mesa')
+      return
+    }
+
     onDoneOrder({
       restaurantId: restaurant.id,
       status: 'ACTIVE',
-      tableId: 1,
+      tableId: parseInt(chosenTable),
       orderItems: orderItems.map(
         (orderItem) =>
           ({
@@ -69,6 +83,20 @@ const OrderDetailsModal = ({
             placeholder="Forma de Pagamento"
           ></Select>
         </Flex>
+        {table === 0 && (
+          <Flex direction="column">
+            <Select
+              data={tables.map((t) => ({
+                value: t.id.toString(),
+                label: t.name,
+              }))}
+              searchable
+              placeholder="Mesa"
+              value={chosenTable}
+              onChange={(value) => setChosenTable(value)}
+            ></Select>
+          </Flex>
+        )}
         <Button color="green" onClick={(_) => handleDoneOrder()}>
           Concluir Pedido
         </Button>

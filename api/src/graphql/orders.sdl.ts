@@ -57,6 +57,9 @@ export const schema = gql`
 
     "Fetch a Order by id."
     order(id: Int!): Order @requireAuth
+
+    "Fetch Orders for a restaurant"
+    restaurantOrders(restaurantId: Int!): [Order!]! @requireAuth
   }
 
   """

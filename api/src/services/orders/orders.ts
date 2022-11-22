@@ -10,6 +10,19 @@ export const orders: QueryResolvers['orders'] = () => {
   return db.order.findMany()
 }
 
+export const restaurantOrders: QueryResolvers['restaurantOrders'] = ({
+  restaurantId,
+}) => {
+  return db.order.findMany({
+    where: {
+      AND: [{ restaurantId: restaurantId }, { status: 'ACTIVE' }],
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+  })
+}
+
 export const order: QueryResolvers['order'] = ({ id }) => {
   return db.order.findUnique({
     where: { id },

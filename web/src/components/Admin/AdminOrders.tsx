@@ -1,5 +1,14 @@
+import { useRestaurantAtom } from 'src/atom/restaurant'
+//@ts-expect-error cell cant be found
+import RestaurantOrdersCell from 'src/components/Restaurant/RestaurantOrdersCell'
+
 const AdminOrders = () => {
-  return <div>Admin Pedidos aqui sera a aba onde estarão listados os pedidos</div>
+  const [restaurant] = useRestaurantAtom()
+  return (
+    <>
+      <RestaurantOrdersCell restaurantId={restaurant.id} />
+    </>
+  )
 }
 
-export default AdminOrders;
+export default AdminOrders

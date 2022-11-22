@@ -11,7 +11,9 @@ export function useCreateOrderMutation({ onCompleted }: MutationParams) {
   const [createOrder, { loading }] = useMutation<CreateOrderInput>(
     CREATE_ORDER_MUTATION,
     {
-      onCompleted,
+      onCompleted() {
+        onCompleted()
+      },
       onError(error) {
         console.error(error)
         toast.error(error.message)

@@ -12,10 +12,16 @@ import {
   TextInput
 } from '@mantine/core'
 import { IconEdit, IconSearch } from '@tabler/icons'
-import { Category, CreateOrderInput, MenuItem, OrderItem } from 'types/graphql'
+import { toast } from 'react-toastify'
+import {
+  Category,
+  CreateOrderInput,
+  MenuItem,
+  OrderItem,
+  Table
+} from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
-import { toast } from '@redwoodjs/web/dist/toast'
 
 import { useCreateOrderMutation } from 'src/hooks/useOrderMutation'
 
@@ -27,9 +33,10 @@ interface Props {
   name: string
   menuItems: MenuItem[]
   categories: Category[]
+  tables: Table[]
 }
 
-const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
+const RestaurantOrder = ({ menuItems, categories, name, tables }: Props) => {
   const { theme, classes } = useStyles()
   const { currentUser } = useAuth()
   const [menuItemsDisplay, setMenuItemsDisplay] = useState<MenuItem[]>()
@@ -37,9 +44,10 @@ const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
   const [order, setOrder] = useState<OrderItem[]>([] as OrderItem[])
   const [total, setTotal] = useState(0.0)
   const [orderDetailsModal, setOrderDetailsModal] = useState(false)
+  const [isOrderEmpty, setIsOrderEmpty] = useState(true)
   const { createOrder, loading } = useCreateOrderMutation({
     onCompleted() {
-      toast.success('Pedido feito!')
+      setOrderDetailsModal(false)
     },
   })
 
@@ -59,6 +67,10 @@ const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
     )
   }, [order])
 
+  useEffect(() => {
+    setIsOrderEmpty(order.length === 0)
+  }, [order])
+
   function onSelectcategory(category: number) {
     setMenuItemsDisplay((_) =>
       menuItems.filter((m) => m.category.id === category)
@@ -66,12 +78,12 @@ const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
   }
 
   async function handleCreateOrder(order: CreateOrderInput) {
-    console.log(order)
     await createOrder({
       variables: {
         input: order,
       },
     })
+    toast.success('Pedido Feito!')
   }
 
   return (
@@ -129,13 +141,18 @@ const RestaurantOrders = ({ menuItems, categories, name }: Props) => {
             <IconEdit color="white" size={25} stroke={1.5} />
           </ActionIcon>
         </Flex>
-        <Button onClick={() => setOrderDetailsModal(true)} color="green">
+        <Button
+          onClick={() => setOrderDetailsModal(true)}
+          color="green"
+          disabled={isOrderEmpty}
+        >
           Concluir Pedido
         </Button>
       </Group>
 
       <OrderDetailsModal
         orderItems={order}
+        tables={tables}
         opened={orderDetailsModal}
         onClose={() => setOrderDetailsModal(false)}
         onDoneOrder={(order) => handleCreateOrder(order)}
@@ -152,4 +169,4 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default RestaurantOrders
+export default RestaurantOrder
