@@ -1,11 +1,11 @@
-import { Button, TextInput } from '@mantine/core'
 import { useEffect, useRef, useState } from 'react'
+
+import { Button, TextInput } from '@mantine/core'
 
 const CategoryForm = ({
   onSubmit,
 }: {
   onSubmit: (category: string) => void
-
 }) => {
   const [category, setCategory] = useState('')
   const categoryRef = useRef<HTMLInputElement>(null)

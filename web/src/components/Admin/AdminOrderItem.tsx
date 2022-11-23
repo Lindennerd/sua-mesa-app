@@ -11,7 +11,9 @@ import {
   UnstyledButton
 } from '@mantine/core'
 import { IconCheck, IconDotsVertical, IconTrash } from '@tabler/icons'
-import { Order } from 'types/graphql'
+import { Order, UpdateOrderInput } from 'types/graphql'
+
+import { useUpdateOrder } from 'src/hooks/useOrderMutation'
 
 import AdminOrderItemStatus from './AdminOrderItemStatus'
 
@@ -21,6 +23,15 @@ interface Props {
 
 const AdminOrderItem = ({ order }: Props) => {
   const { classes } = useStyles()
+
+  const { updateOrder } = useUpdateOrder({ onCompleted() {} })
+  const updateOrderVars = {
+    payed: order.payed,
+    restaurantId: order.restaurantId,
+    status: order.status,
+    tableId: order.tableId,
+    userId: order.userId,
+  } as UpdateOrderInput
 
   const orderTotal = useMemo(() => {
     return order.orderItems.reduce(
@@ -32,6 +43,40 @@ const AdminOrderItem = ({ order }: Props) => {
   function formatDate(date: string) {
     const dateParsed = new Date(date)
     return `${dateParsed.toLocaleString()}`
+  }
+
+  async function handlePayOrder() {
+    await updateOrder({
+      variables: {
+        id: order.id,
+        input: { ...updateOrderVars, payed: !order.payed },
+      },
+      optimisticResponse() {
+        return {
+          updateOrder: {
+            ...order,
+            payed: !order.payed,
+          },
+        }
+      },
+    })
+  }
+
+  async function handleCloseOrder() {
+    await updateOrder({
+      variables: {
+        id: order.id,
+        input: { ...updateOrderVars, status: 'CLOSED' },
+      },
+      optimisticResponse() {
+        return {
+          updateOrder: {
+            ...order,
+            status: 'CLOSED',
+          },
+        }
+      },
+    })
   }
 
   return (
@@ -63,8 +108,10 @@ const AdminOrderItem = ({ order }: Props) => {
               ))}
           </Flex>
           <Group p="sm">
-            <UnstyledButton>
-              <Badge>{order.payed ? 'Pago' : 'Pagamento Pendente'}</Badge>
+            <UnstyledButton onClick={() => handlePayOrder()}>
+              <Badge color={order.payed ? 'green' : 'blue'}>
+                {order.payed ? 'Pago' : 'Pagamento Pendente'}
+              </Badge>
             </UnstyledButton>
             <Text weight="bolder" color="green">
               R$ {orderTotal}
@@ -79,11 +126,14 @@ const AdminOrderItem = ({ order }: Props) => {
               </ActionIcon>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item icon={<IconCheck size={14} />}>
+              <Menu.Item
+                onClick={() => handleCloseOrder()}
+                icon={<IconCheck size={14} />}
+              >
                 Encerrar Pedido
               </Menu.Item>
               <Menu.Item
-                // onClick={() => setModalDeleteMenuItemOpen(true)}
+                onClick={() => handleCloseOrder()}
                 color="red"
                 icon={<IconTrash size={14} />}
               >

@@ -27,6 +27,42 @@ export const CREATE_ORDER_MUTATION = gql`
   }
 `
 
+export const ORDER_UPDATE_MUTATION = gql`
+  mutation UpdateOrder($id: Int!, $input: UpdateOrderInput!) {
+    updateOrder(id: $id, input: $input) {
+      payed
+      status
+      table {
+        id
+        name
+      }
+      createdAt
+      customer {
+        name
+        id
+        email
+      }
+      id
+      orderItems {
+        id
+        quantity
+        status
+        item {
+          name
+          image
+          price
+          description
+          id
+          category {
+            name
+            id
+          }
+        }
+      }
+    }
+  }
+`
+
 export const RESTAURANT_ORDERS_QUERY = gql`
   query RestaurantOrdersQuery($restaurantId: Int!) {
     restaurantOrders(restaurantId: $restaurantId) {
