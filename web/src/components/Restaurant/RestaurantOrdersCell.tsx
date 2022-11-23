@@ -3,42 +3,11 @@ import type { RestaurantOrdersQuery } from 'types/graphql'
 
 import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web'
 
+import { RESTAURANT_ORDERS_QUERY } from 'src/graphql/order'
+
 import AdminOrdersList from '../Admin/AdminOrdersList'
 
-export const QUERY = gql`
-  query RestaurantOrdersQuery($restaurantId: Int!) {
-    restaurantOrders(restaurantId: $restaurantId) {
-      payed
-      status
-      table {
-        id
-        name
-      }
-      createdAt
-      customer {
-        name
-        id
-        email
-      }
-      id
-      orderItems {
-        quantity
-        status
-        item {
-          name
-          image
-          price
-          description
-          id
-          category {
-            name
-            id
-          }
-        }
-      }
-    }
-  }
-`
+export const QUERY = RESTAURANT_ORDERS_QUERY
 
 export const beforeQuery = (props) => {
   return {

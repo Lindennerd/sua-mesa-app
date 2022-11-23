@@ -19,6 +19,45 @@ export const CREATE_ORDER_MUTATION = gql`
             id
           }
         }
+        order {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const RESTAURANT_ORDERS_QUERY = gql`
+  query RestaurantOrdersQuery($restaurantId: Int!) {
+    restaurantOrders(restaurantId: $restaurantId) {
+      payed
+      status
+      table {
+        id
+        name
+      }
+      createdAt
+      customer {
+        name
+        id
+        email
+      }
+      id
+      orderItems {
+        id
+        quantity
+        status
+        item {
+          name
+          image
+          price
+          description
+          id
+          category {
+            name
+            id
+          }
+        }
       }
     }
   }

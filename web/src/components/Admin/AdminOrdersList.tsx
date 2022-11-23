@@ -36,7 +36,7 @@ const AdminOrdersList = ({ orders }: Props) => {
         filter={filter}
         onFilter={(filter) => setFilter(filter)}
       />
-      <Flex direction="column">
+      <Flex direction="column" gap="sm" p="sm">
         {ordersDisplay &&
           ordersDisplay.map((order) => (
             <AdminOrderItem order={order} key={order.id} />

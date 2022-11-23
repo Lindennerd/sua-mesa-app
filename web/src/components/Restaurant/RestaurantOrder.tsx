@@ -62,9 +62,7 @@ const RestaurantOrder = ({ menuItems, categories, name, tables }: Props) => {
   }, [menuItems, search])
 
   useEffect(() => {
-    setTotal(
-      order.reduce((prev, curr) => prev + curr.item.price * curr.quantity, 0)
-    )
+    setTotal(orderinputinputinput)
   }, [order])
 
   useEffect(() => {
