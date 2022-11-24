@@ -20,10 +20,11 @@ const AdminOrdersList = ({ orders }: Props) => {
 
   useEffect(() => {
     setOrdersDisplay(
-      orders.filter((order) =>
-        order.orderItems.some((orderItem) =>
-          orderItem.item.name.includes(filter)
-        )
+      orders.filter(
+        (order) =>
+          order.orderItems.some((orderItem) =>
+            orderItem.item.name.includes(filter)
+          ) || order.table.name.includes(filter)
       )
     )
   }, [filter, orders])
