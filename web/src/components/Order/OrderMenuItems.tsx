@@ -18,6 +18,8 @@ interface Props {
 
 const OrderMenuItems = ({ menuItems, onOrderItem }: Props) => {
   function handleOrderChange(amount: number, item: MenuItem) {
+    if (amount === undefined) amount = 0
+
     onOrderItem((orders) => {
       // if amount is 0, remove item
       if (amount === 0) {
@@ -72,7 +74,8 @@ const OrderMenuItems = ({ menuItems, onOrderItem }: Props) => {
                 <Image src={m.image} width="auto" height={100} alt={m.name} />
                 <Flex direction="column">
                   <Text weight="bolder">
-                    {m.name} <Badge color="green">R$ {m.price.toPrecision(2)}</Badge>
+                    {m.name}{' '}
+                    <Badge color="green">R$ {m.price.toPrecision(2)}</Badge>
                   </Text>
                   <Text>{m.description}</Text>
                 </Flex>

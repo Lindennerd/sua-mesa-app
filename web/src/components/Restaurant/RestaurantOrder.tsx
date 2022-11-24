@@ -52,17 +52,22 @@ const RestaurantOrder = ({ menuItems, categories, name, tables }: Props) => {
   })
 
   useEffect(() => {
+    // filter menu by category
     setMenuItemsDisplay(
       menuItems.filter((m) => m.category.id === categories[0].id)
     )
   }, [categories, menuItems])
 
   useEffect(() => {
+    //filter menu by item name
     setMenuItemsDisplay(menuItems.filter((menu) => menu.name.includes(search)))
   }, [menuItems, search])
 
   useEffect(() => {
-    setTotal(orderinputinputinput)
+    //computes order total amount
+    setTotal(
+      order.reduce((prev, curr) => prev + curr.item.price * curr.quantity, 0)
+    )
   }, [order])
 
   useEffect(() => {
