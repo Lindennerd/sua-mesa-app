@@ -23,6 +23,10 @@ import {
   IconToolsKitchen2
 } from '@tabler/icons'
 
+import { navigate, routes } from '@redwoodjs/router'
+
+import { useRestaurantAtom } from 'src/atom/restaurant'
+
 const useStyles = createStyles((theme) => ({
   header: {
     paddingTop: theme.spacing.sm,
@@ -118,6 +122,7 @@ export function OrdersPageHeader({
   const { classes, cx } = useStyles()
   const [opened, { toggle }] = useDisclosure(false)
   const [userMenuOpened, setUserMenuOpened] = useState(false)
+  const [restaurant] = useRestaurantAtom()
 
   const items = tabs.map((tab) => (
     <Tabs.Tab
@@ -128,6 +133,10 @@ export function OrdersPageHeader({
       {tab.label}
     </Tabs.Tab>
   ))
+
+  function gotoCustomerOdersPage() {
+    navigate(routes.customerOrders({ slug: restaurant.slug }))
+  }
 
   return (
     <>
@@ -175,7 +184,10 @@ export function OrdersPageHeader({
                 <Menu.Item icon={<IconInfoCircle size={15} stroke={1.5} />}>
                   Informações de usuário
                 </Menu.Item>
-                <Menu.Item icon={<IconToolsKitchen2 size={15} stroke={1.5} />}>
+                <Menu.Item
+                  onClick={() => gotoCustomerOdersPage()}
+                  icon={<IconToolsKitchen2 size={15} stroke={1.5} />}
+                >
                   Meus Pedidos
                 </Menu.Item>
                 <Menu.Item

@@ -23,6 +23,22 @@ export const restaurantOrders: QueryResolvers['restaurantOrders'] = ({
   })
 }
 
+export const customerOrders: QueryResolvers['customerOrders'] = ({
+  restaurantSlug,
+}) => {
+  return db.order.findMany({
+    where: {
+      AND: [
+        { restaurant: { slug: restaurantSlug } },
+        { userId: context.currentUser.id },
+      ],
+    },
+    orderBy: {
+      createdAt: 'asc',
+    },
+  })
+}
+
 export const order: QueryResolvers['order'] = ({ id }) => {
   return db.order.findUnique({
     where: { id },

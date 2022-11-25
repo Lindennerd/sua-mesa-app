@@ -10,6 +10,7 @@ import LandingPageLayout from './layouts/LandingPageLayout/LandingPageLayout'
 const Routes = () => {
   return (
     <Router>
+      <Route path="/meus-pedidos/{slug:String}" page={CustomerOrdersPage} name="customerOrders" />
       <Route path="/pedidos/{slug:String}" page={OrdersPage} name="orders" />
       <Route path="/pedidos/{slug:String}/table/{id:int}" page={OrdersPage} name="orders" />
       <Set wrap={LandingPageLayout}>
