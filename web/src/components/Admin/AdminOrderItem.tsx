@@ -13,6 +13,7 @@ import {
 import { IconCheck, IconDotsVertical, IconTrash } from '@tabler/icons'
 import { Order, UpdateOrderInput } from 'types/graphql'
 
+import { useFormatDate } from 'src/hooks/useFormatDate'
 import { useUpdateOrder } from 'src/hooks/useOrderMutation'
 
 import AdminOrderItemStatus from './AdminOrderItemStatus'
@@ -23,7 +24,7 @@ interface Props {
 
 const AdminOrderItem = ({ order }: Props) => {
   const { classes } = useStyles()
-
+  const { formatDate } = useFormatDate()
   const { updateOrder } = useUpdateOrder({ onCompleted() {} })
   const updateOrderVars = {
     payed: order.payed,
@@ -39,11 +40,6 @@ const AdminOrderItem = ({ order }: Props) => {
       0
     )
   }, [order])
-
-  function formatDate(date: string) {
-    const dateParsed = new Date(date)
-    return `${dateParsed.toLocaleString()}`
-  }
 
   async function handlePayOrder() {
     await updateOrder({

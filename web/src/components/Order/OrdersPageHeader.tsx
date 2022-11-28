@@ -105,12 +105,12 @@ const useStyles = createStyles((theme) => ({
 
 interface HeaderTabsProps {
   user: { name: string; image: string }
-  tabs: {
+  tabs?: {
     label: string
     id: number
   }[]
   name: string
-  onSelectcategory: (category: number) => void
+  onSelectcategory?: (category: number) => void
 }
 
 export function OrdersPageHeader({
@@ -124,15 +124,17 @@ export function OrdersPageHeader({
   const [userMenuOpened, setUserMenuOpened] = useState(false)
   const [restaurant] = useRestaurantAtom()
 
-  const items = tabs.map((tab) => (
-    <Tabs.Tab
-      value={tab.label}
-      key={tab.id}
-      onClick={() => onSelectcategory(tab.id)}
-    >
-      {tab.label}
-    </Tabs.Tab>
-  ))
+  const items =
+    tabs &&
+    tabs.map((tab) => (
+      <Tabs.Tab
+        value={tab.label}
+        key={tab.id}
+        onClick={() => onSelectcategory(tab.id)}
+      >
+        {tab.label}
+      </Tabs.Tab>
+    ))
 
   function gotoCustomerOdersPage() {
     navigate(routes.customerOrders({ slug: restaurant.slug }))
@@ -200,18 +202,20 @@ export function OrdersPageHeader({
             </Menu>
           </Group>
         </Container>
-        <Container>
-          <Tabs
-            defaultValue={tabs[0].label}
-            variant="outline"
-            classNames={{
-              tabsList: classes.tabsList,
-              tab: classes.tab,
-            }}
-          >
-            <Tabs.List>{items}</Tabs.List>
-          </Tabs>
-        </Container>
+        {tabs && (
+          <Container>
+            <Tabs
+              defaultValue={tabs[0].label}
+              variant="outline"
+              classNames={{
+                tabsList: classes.tabsList,
+                tab: classes.tab,
+              }}
+            >
+              <Tabs.List>{items}</Tabs.List>
+            </Tabs>
+          </Container>
+        )}
       </div>
 
       <Navbar

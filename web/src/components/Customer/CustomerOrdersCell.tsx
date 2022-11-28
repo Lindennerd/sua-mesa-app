@@ -1,6 +1,9 @@
+import { LoadingOverlay } from '@mantine/core'
 import type { CustomerOrdersQuery } from 'types/graphql'
 
 import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web'
+
+import CustomerOrders from './CustomerOrders'
 
 export const QUERY = gql`
   query CustomerOrdersQuery($restaurantSlug: String!) {
@@ -34,11 +37,24 @@ export const QUERY = gql`
           }
         }
       }
+      restaurant {
+        name
+      }
     }
   }
 `
+export const beforeQuery = (props) => {
+  return {
+    variables: props,
+    fetchPolicy: 'cache-and-network',
+  }
+}
 
-export const Loading = () => <div>Loading...</div>
+export const Loading = () => (
+  <>
+    <LoadingOverlay visible={true} />
+  </>
+)
 
 export const Empty = () => <div>Empty</div>
 
@@ -49,11 +65,5 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({
   customerOrders,
 }: CellSuccessProps<CustomerOrdersQuery>) => {
-  return (
-    <ul>
-      {customerOrders.map((item) => {
-        return <li key={item.id}>{JSON.stringify(item)}</li>
-      })}
-    </ul>
-  )
+  return <CustomerOrders orders={customerOrders} />
 }
