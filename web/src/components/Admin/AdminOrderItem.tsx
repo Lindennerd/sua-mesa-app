@@ -1,22 +1,10 @@
-import { useMemo } from 'react'
-
-import {
-  ActionIcon,
-  Badge,
-  createStyles,
-  Flex,
-  Group,
-  Menu,
-  Text,
-  UnstyledButton
-} from '@mantine/core'
+import { ActionIcon, createStyles, Flex, Menu } from '@mantine/core'
 import { IconCheck, IconDotsVertical, IconTrash } from '@tabler/icons'
 import { Order, UpdateOrderInput } from 'types/graphql'
 
-import { useFormatDate } from 'src/hooks/useFormatDate'
 import { useUpdateOrder } from 'src/hooks/useOrderMutation'
 
-import AdminOrderItemStatus from './AdminOrderItemStatus'
+import OrderDisplay from '../Order/OrderDisplay'
 
 interface Props {
   order: Order
@@ -24,7 +12,6 @@ interface Props {
 
 const AdminOrderItem = ({ order }: Props) => {
   const { classes } = useStyles()
-  const { formatDate } = useFormatDate()
   const { updateOrder } = useUpdateOrder({ onCompleted() {} })
   const updateOrderVars = {
     payed: order.payed,
@@ -33,13 +20,6 @@ const AdminOrderItem = ({ order }: Props) => {
     tableId: order.tableId,
     userId: order.userId,
   } as UpdateOrderInput
-
-  const orderTotal = useMemo(() => {
-    return order.orderItems.reduce(
-      (prev, curr) => prev + curr.item.price * curr.quantity,
-      0
-    )
-  }, [order])
 
   async function handlePayOrder() {
     await updateOrder({
@@ -79,40 +59,11 @@ const AdminOrderItem = ({ order }: Props) => {
     <Flex className={classes.bottomBordered} direction="column" p="sm">
       <Flex justify="space-between" gap="md">
         <div style={{ flex: '1' }}>
-          <Group className={classes.orderTitle}>
-            <Text weight="bolder">
-              Pedido #{order.id} - Mesa {order.table.name}
-            </Text>
-            <Text variant="text" size="sm">
-              {formatDate(order.createdAt)}
-            </Text>
-          </Group>
-          <Flex direction="column" p="sm">
-            {order.orderItems &&
-              order.orderItems.map((orderItem) => (
-                <Group key={orderItem.id} className={classes.orderItem}>
-                  <Text>
-                    {orderItem.quantity} x{' '}
-                    {orderItem.item.name.toLocaleUpperCase()} - R${' '}
-                    {orderItem.item.price.toFixed(2)}
-                  </Text>
-                  <AdminOrderItemStatus
-                    orderItem={orderItem}
-                    orderId={order.id}
-                  />
-                </Group>
-              ))}
-          </Flex>
-          <Group p="sm">
-            <UnstyledButton onClick={() => handlePayOrder()}>
-              <Badge color={order.payed ? 'green' : 'blue'}>
-                {order.payed ? 'Pago' : 'Pagamento Pendente'}
-              </Badge>
-            </UnstyledButton>
-            <Text weight="bolder" color="green">
-              R$ {orderTotal}
-            </Text>
-          </Group>
+          <OrderDisplay
+            order={order}
+            handlePayOrder={handlePayOrder}
+            enableStatusChange={true}
+          />
         </div>
         <div>
           <Menu transition="slide-down" transitionDuration={150}>
@@ -147,15 +98,6 @@ const useStyles = createStyles((theme) => ({
   bottomBordered: {
     border: '1px solid #eee',
     borderRadius: theme.radius.sm,
-  },
-  orderTitle: {
-    color: theme.colors.red[7],
-    padding: '.5em',
-    borderRadius: theme.radius.lg,
-  },
-  orderItem: {
-    padding: '.5em',
-    border: '1px solid #eee',
   },
 }))
 

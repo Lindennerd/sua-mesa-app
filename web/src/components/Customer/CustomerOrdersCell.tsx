@@ -4,6 +4,8 @@ import type { CustomerOrdersQuery } from 'types/graphql'
 import type { CellFailureProps, CellSuccessProps } from '@redwoodjs/web'
 
 import CustomerOrders from './CustomerOrders'
+import { useRestaurantAtom } from 'src/atom/restaurant'
+import { useEffect } from 'react'
 
 export const QUERY = gql`
   query CustomerOrdersQuery($restaurantSlug: String!) {
@@ -39,6 +41,8 @@ export const QUERY = gql`
       }
       restaurant {
         name
+        slug
+        id
       }
     }
   }
@@ -65,5 +69,13 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({
   customerOrders,
 }: CellSuccessProps<CustomerOrdersQuery>) => {
+  const [_, setRestaurant] = useRestaurantAtom()
+  useEffect(() => {
+    setRestaurant({
+      id: customerOrders[0].restaurant.id,
+      slug: customerOrders[0].restaurant.slug,
+    })
+  }, [customerOrders, setRestaurant])
+
   return <CustomerOrders orders={customerOrders} />
 }

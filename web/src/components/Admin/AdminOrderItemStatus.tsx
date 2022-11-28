@@ -6,6 +6,7 @@ import { useOrderItemUpdateStatus } from 'src/hooks/useOrderItemMutation'
 interface Props {
   orderItem: OrderItem
   orderId: number
+  enabled: boolean
 }
 
 function OrdemItemStatusBadgeFactory(status: OrderItemStatus) {
@@ -23,7 +24,7 @@ function OrdemItemStatusBadgeFactory(status: OrderItemStatus) {
   }
 }
 
-const AdminOrderItemStatus = ({ orderItem, orderId }: Props) => {
+const AdminOrderItemStatus = ({ orderItem, orderId, enabled }: Props) => {
   const { updateOrderItem } = useOrderItemUpdateStatus({ onCompleted() {} })
 
   async function handleUpdateStatus(status: OrderItemStatus) {
@@ -51,7 +52,7 @@ const AdminOrderItemStatus = ({ orderItem, orderId }: Props) => {
   return (
     <Menu>
       <Menu.Target>
-        <UnstyledButton>
+        <UnstyledButton disabled={!enabled}>
           {OrdemItemStatusBadgeFactory(orderItem.status)}
         </UnstyledButton>
       </Menu.Target>

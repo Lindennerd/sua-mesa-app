@@ -1,10 +1,9 @@
-import { Container, createStyles, Flex, Group, Text } from '@mantine/core'
+import { Container, createStyles, Flex } from '@mantine/core'
 import { Order } from 'types/graphql'
 
 import { useAuth } from '@redwoodjs/auth'
 
-import { useFormatDate } from 'src/hooks/useFormatDate'
-
+import OrderDisplay from '../Order/OrderDisplay'
 import { OrdersPageHeader } from '../Order/OrdersPageHeader'
 
 interface Props {
@@ -13,7 +12,6 @@ interface Props {
 
 const CustomerOrders = ({ orders }: Props) => {
   const { currentUser } = useAuth()
-  const { formatDate } = useFormatDate()
   const { classes } = useStyles()
 
   return (
@@ -28,11 +26,9 @@ const CustomerOrders = ({ orders }: Props) => {
       <Container>
         <Flex direction="column">
           {orders.map((o) => (
-            <Group key={o.id} className={classes.bottomBordered} p="sm">
-              <Text>
-                Pedido #{o.id} - {formatDate(o.createdAt)}
-              </Text>
-            </Group>
+            <div key={o.id} className={classes.bottomBordered}>
+              <OrderDisplay order={o} enableStatusChange={false}/>
+            </div>
           ))}
         </Flex>
       </Container>

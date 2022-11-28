@@ -20,12 +20,14 @@ import {
   IconChevronRight,
   IconInfoCircle,
   IconLogout,
+  IconMenu,
   IconToolsKitchen2
 } from '@tabler/icons'
 
 import { navigate, routes } from '@redwoodjs/router'
 
 import { useRestaurantAtom } from 'src/atom/restaurant'
+import { useTableAtom } from 'src/atom/table'
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -123,6 +125,7 @@ export function OrdersPageHeader({
   const [opened, { toggle }] = useDisclosure(false)
   const [userMenuOpened, setUserMenuOpened] = useState(false)
   const [restaurant] = useRestaurantAtom()
+  const [table] = useTableAtom()
 
   const items =
     tabs &&
@@ -136,8 +139,15 @@ export function OrdersPageHeader({
       </Tabs.Tab>
     ))
 
-  function gotoCustomerOdersPage() {
+  function gotoCustomerOrdersPage() {
     navigate(routes.customerOrders({ slug: restaurant.slug }))
+  }
+
+  function gotoMenuPage() {
+    const ordersUrl = `/pedidos/${restaurant.slug}`
+    console.log(ordersUrl)
+    if (table === 0) window.location.assign(ordersUrl)
+    else navigate(routes.orders({ slug: restaurant.slug, id: table }))
   }
 
   return (
@@ -187,7 +197,13 @@ export function OrdersPageHeader({
                   Informações de usuário
                 </Menu.Item>
                 <Menu.Item
-                  onClick={() => gotoCustomerOdersPage()}
+                  onClick={() => gotoMenuPage()}
+                  icon={<IconMenu size={15} stroke={1.5} />}
+                >
+                  Menu
+                </Menu.Item>
+                <Menu.Item
+                  onClick={() => gotoCustomerOrdersPage()}
                   icon={<IconToolsKitchen2 size={15} stroke={1.5} />}
                 >
                   Meus Pedidos
@@ -234,11 +250,20 @@ export function OrdersPageHeader({
             color="red"
           />
           <NavLink
+            label="Menu"
+            icon={<IconMenu size={20} stroke={1.5} />}
+            variant="light"
+            rightSection={<IconChevronRight size={12} stroke={1.5} />}
+            color="red"
+            onClick={() => gotoMenuPage()}
+          />
+          <NavLink
             label="Meus Pedidos"
             icon={<IconToolsKitchen2 size={20} stroke={1.5} />}
             variant="light"
             rightSection={<IconChevronRight size={12} stroke={1.5} />}
             color="red"
+            onClick={() => gotoCustomerOrdersPage()}
           />
           <NavLink
             label="Sair"
