@@ -1,13 +1,19 @@
 import type {
   MutationResolvers,
   QueryResolvers,
-  RestaurantRelationResolvers
+  RestaurantRelationResolvers,
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
 
 export const restaurants: QueryResolvers['restaurants'] = () => {
-  return db.restaurant.findMany()
+  return db.restaurant.findMany({
+    select: {
+      id: true,
+      slug: true,
+      name: true,
+    },
+  })
 }
 
 export const restaurant: QueryResolvers['restaurant'] = ({ id }) => {

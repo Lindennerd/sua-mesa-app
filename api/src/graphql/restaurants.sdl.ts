@@ -37,12 +37,23 @@ export const schema = gql`
     Category: [Category]!
   }
 
+  type RestaurantPublicInfo {
+    "Description for id."
+    id: Int!
+
+    "Description for name."
+    name: String!
+
+    "Description for slug."
+    slug: String!
+  }
+
   """
   About queries
   """
   type Query {
     "Fetch Restaurants."
-    restaurants: [Restaurant!]! @requireAuth
+    restaurants: [RestaurantPublicInfo!]!
 
     "Fetch a Restaurant by id."
     restaurant(id: Int!): Restaurant @requireAuth
